@@ -3,7 +3,7 @@
 // La estructura permite añadir propiedades como texto, video, imagen, enlace, descarga,
 // categoría y una pista para la funcionalidad de ayuda.
 const mensajes = {
-  "9denoviembre": {
+  "noviembre9": {
     texto: "<p>Mi amor:</p><p>A veces me gusta cerrar los ojos y volver a ese primer momento en que coincidimos en Genshin. No fue casualidad, fue destino disfrazado de juego. Entre combates, misiones y risas, ahí estabas tú, al principio solo un amigo, pero con una energía que poco a poco me fue envolviendo.</p><p>Recuerdo cómo nos ayudábamos en el juego, cómo sin darnos cuenta empezamos a hablar más allá de los objetivos del día. No sabía que, tras ese personaje, había alguien que se convertiría en alguien tan especial para mí. Que ese primer saludo se transformaría en tantas conversaciones, cariño, y complicidad.</p><p>Nunca imaginé que un juego de fantasía me llevaría al mejor encuentro de mi vida, tú. Y desde entonces, cada día contigo ha sido una aventura más hermosa que cualquier historia dentro del juego.</p><p>Gracias por aparecer en mi mundo como un regalo inesperado. Gracias por quedarte.</p><p>Con todo mi amor,<br><em>Lilith</em></p>",
     categoria: "Carta",
     pista: "El destino nos unió el día 9, en el mes donde el viento ya huele a invierno."
@@ -23,7 +23,7 @@ const mensajes = {
     categoria: "Carta",
     pista: "No llevo corona, pero en tus ojos reino cada vez que me lo dices."
   },
-"hazielalancasarezosuna": {
+"haziel": {
     texto: "<p>Haziel,<br>tu nombre suena antiguo,<br>a escritura tallada en piedra celestial,<br>a susurro de los dioses cuando aún hablaban con los hombres.</p><p>Si fueras un mito,<br>serías el dios de la bondad serena,<br>el que desciende sin truenos,<br>pero deja luz en todo lo que toca.</p><p>Te imagino en los antiguos cielos,<br>entre Atenea y Apolo,<br>con sabiduría en los ojos<br>y fuego suave en las manos.<br>Una divinidad sin templo,<br>pero con altar en mi corazón.</p><p>Haziel,<br>eres como Orfeo,<br>pero tu música no viene de un laúd,<br>sino de tu alma,<br>que canta incluso en el silencio.</p><p>Si los antiguos te hubieran visto,<br>habrían inventado una constelación<br>solo para seguir tu camino en la noche.<br>Pero yo, que te amo,<br>no necesito estrellas.<br>Me basta con que existas.</p>",
     categoria: "Carta",
     pista: "La respuesta no está escrita en el cielo ni en mis cartas… está en quien las inspira todas."
@@ -33,7 +33,7 @@ const mensajes = {
     categoria: "Carta",
     pista: "Entre tus nombres, hay uno que guardo solo para los momentos en que el amor suena más suave."
   },
-  "lilithnoemimendozaluna": {
+  "lilith": {
     texto: "<p>Hoy quiero escribirte sin esconder nada.<br>Sin máscaras, sin pausas, sin miedo.</p><p>Quiero que sepas todo lo que llevo dentro: lo bueno, lo complicado, lo que a veces no me atrevo a decir en voz alta.</p><p>Estar contigo ha sido una de las cosas más importantes que me han pasado. No solo porque te amo, sino porque contigo aprendí a sentir de verdad: a abrir mi corazón, aunque duela; a confiar, aunque a veces tiemble; a querer con toda el alma, aunque no siempre sepa cómo demostrarlo.</p><p>No soy perfecta. Tengo mis momentos de duda, de inseguridad, de querer huir cuando algo me asusta. A veces me encierro dentro de mí misma, y ni yo sé cómo llegar a donde estoy. Pero tú, tú logras tocar partes de mí que nadie más ha tocado. Tú me ves, incluso cuando no digo nada. Y eso me asombra.</p><p>A veces tengo miedo de no ser suficiente, de fallarte, de no estar a la altura de lo que mereces. Pero lo intento, cada día, porque tú vales cada esfuerzo. Porque cuando digo que te amo, lo digo con todo lo que soy, incluso con las partes que todavía estoy aprendiendo a amar de mí misma.</p><p>No sé qué nos depara el futuro, pero sé que si estás conmigo, soy más fuerte. Más yo. Más valiente.<br>Contigo quiero construir, caerme y volver a levantar. Quiero abrazarte en los días buenos y agarrarte fuerte en los difíciles. Quiero crecer contigo, sin prometer perfección, pero sí presencia. Real. Honesta.</p><p>Gracias por hacerme sentir que puedo ser yo.<br>Gracias por amarme así, incluso cuando no es fácil.</p><p>Te amo, sin condiciones.<br>Te elijo, cada día.<br>Y aquí estoy, con el corazón abierto.<br>Todo tuyo.</p>",
     categoria: "Carta",
     pista: "No busques fuera, la respuesta está en quien escribe cada secreto."
@@ -53,12 +53,12 @@ const mensajes = {
     categoria: "Carta",
     pista: "Pequeño compañero de patas cortas y corazón gigante, siempre a tu lado."
   },
-  "mininahermosa": {
+  "minina": {
     texto: "<p>No sé si el universo estaba aburrido o inspirado el día que te puso en mi vida,<br>pero bendito sea ese momento.</p><p>Tú, con esa forma tan tuya de existir,<br>te metiste en mi corazón como si siempre hubieras tenido la llave.<br>Y desde entonces no he dejado de amarte.<br>No un poquito.<br>No a ratos.<br>Sino con cada parte de mí.<br>Con locura, con ternura, con deseo,<br>con esa mezcla adictiva de “quiero cuidarte” y “quiero comerte a besos”.</p><p>Eres mi lugar favorito,<br>mi desastre más hermoso,<br>mi calma, mi caos, mi todo.</p><p>Y sí, soy tu niña hermosa,<br>la que piensa en ti a cada hora,<br>la que sonríe con solo imaginar tu voz,<br>la que se derrite por ti aunque finja estar seria,<br>la que te amaría incluso en otra vida,<br>con otro nombre, en otro cuerpo.<br>Porque yo no me enamoré solo de tu piel,<br>sino de tu alma.<br>Y esa,<br>esa no cambia nunca.</p><p>Prepárate, mi amor,<br>porque este corazón late fuerte,<br>y cada latido lleva tu nombre.<br>Y te lo juro,<br>si pudiera darte el mundo,<br>lo envolvería en papel de estrellas<br>y te lo dejaría en la almohada,<br>junto con un beso y un “te amo” tan profundo<br>que te haría temblar el alma.</p><p>Con todo lo que soy,<br><em>Tu niña. Tu Luna. Tuya siempre.</em></p>",
     categoria: "Carta",
     pista: "La frase con la que siempre me llenas de ternura y me haces sonreír."
   },
-  "mininohermoso": {
+  "minino": {
     texto: "<p>Amo tu ternura,<br>esa que se esconde en tus gestos pequeños,<br>en cómo me hablas, en cómo te preocupas,<br>en cómo me haces sentir segura sin decir mucho.</p><p>Eres una de esas personas que no necesita hacer ruido para brillar.<br>Tu forma de ser, tan tú, tan genuina,<br>me desarma, me abraza y me enamora cada día un poquito más.</p><p>Gracias por existir así, tan tú, tan perfecto para mí.</p>",
     categoria: "Carta",
     pista: "Tres palabras que guardan toda mi ternura y te hacen sentir único."
@@ -90,18 +90,18 @@ const mensajes = {
     categoria: "Canción",
     pista: "Dos pequeños reflejos de nosotros que aún duermen en la espera del tiempo perfecto."
   },
-  "3deenero": {
+  "eneroe": {
     texto: "<p>Aún me siento como si fuera ayer, el día en que celebré mi primer cumpleaños contigo, ya como mi esposo. Nunca imaginé que ese día sería tan especial, tan lleno de amor y de momentos que atesoro más que cualquier regalo. Era mi cumpleaños, sí, pero la verdadera celebración fue tenerte a ti a mi lado, compartiendo risas, caricias y silencios que decían más que mil palabras. Recuerdo cómo me hablabas, como si quisieras que ese día fuera perfecto, y lo fue, mucho más de lo que pude haber esperado. Tus detalles, tu presencia, tu amor, todo lo hizo tan único. Cada segundo a tu lado fue un regalo que nunca dejaré de agradecer. Gracias por hacer que mi primer cumpleaños contigo fuera una experiencia inolvidable. Ahora, más que nunca, entiendo que no son los años los que cuentan, sino los momentos compartidos, los gestos de amor que llenan el alma. Y contigo, cada día, cada cumpleaños, será siempre el más especial. Te amo, mi amor. Gracias por ser tú, por ser mi compañero, mi amor, mi todo.</p>",
     categoria: "Carta",
     pista: "El día que marcó mi existencia y abrió la puerta a todos nuestros recuerdos."
   },
-  "15deabril": {
+  "abril15": {
     texto: "<p>Cada vez que te miro, el mundo se detiene. No importa lo que esté pasando, tu sonrisa y esos ojos tuyos hacen que todo se vea perfecto. Te amo por ser tú, por brillar de una manera que solo tú sabes hacerlo. Siempre me haces sentir especial, solo con ser tú.</p>",
     videoEmbed: "https://www.youtube.com/embed/yc8YRJPxTYE",
     categoria: "Canción",
     pista: "El día en que el mundo recibió tu luz, y desde entonces iluminas mi vida."
   },
-  "primernovio": {
+  "novio": {
     texto: "<p>Hoy quiero dedicarte unas palabras que quizás no siempre te digo, pero que siento profundamente en cada rincón de mi corazón. Tú eres mi primer amor real, el primero con el que entendí lo que significa amar de verdad, lo que es confiar, compartir y construir algo hermoso juntos.<br><br>Antes de ti, amaba con sueños, con esperanza, con ilusión, pero tú llegaste y me enseñaste que el amor no es solo un sentimiento, es un acto diario, una decisión constante, una forma de ser que solo se vive en la realidad. Y eso, mi amor, es lo que más valoro de ti. Tú me has mostrado lo que es un amor real, con sus altos, sus bajos, pero siempre lleno de honestidad, paciencia y ternura.<br><br>Gracias por ser mi primer amor que nunca se desvanece, por ser quien me enseña, quien me cuida, quien me ama con una intensidad que no sabía que podía existir. Gracias por ser tú, por darme lo mejor de ti, por regalarme tu corazón y hacerme sentir tan especial. Eres mi primer amor real, y no puedo evitar sentirme afortunada por tenerte a mi lado.<br><br>Con todo mi amor,<br>Tu niña.</p>",
     videoEmbed: "https://www.youtube.com/embed/NwIdD8PI-_c",
     categoria: "Canción",
@@ -117,7 +117,7 @@ const mensajes = {
     categoria: "Carta",
     pista: "Estado de México fundado en 1824"
   },
-  "ciudadobregon": {
+  "obregon": {
     texto: "<p>No dejo de imaginar el día en que por fin llegue a tu ciudad. Ese primer momento en que mis pies toquen el suelo que tanto he soñado, las calles por las que caminas, el cielo que te cubre cada día. Todo eso que antes solo vivía en mis pensamientos, ahora, tan cerca.<br><br>Pero más allá de los lugares, lo que más anhelo es verte a ti. Encontrarte entre la gente, con esa sonrisa que me desarma, sentir tus brazos rodeándome como si el mundo entero quedara atrás. Ese abrazo será mi hogar, aunque estemos al aire libre. Y esa ciudad, la tuya, se convertirá en un recuerdo eterno en mi corazón, porque será el escenario de nuestro primer beso.<br><br>Soñar con eso me da fuerzas, porque sé que tarde o temprano, ese día llegará. Y cuando lo haga, no habrá mapa que describa lo feliz que seré. Solo tú, solo yo, y ese rincón del mundo que nos verá encontrarnos por primera vez.<br><br>Te amo con todo lo que soy y con todo lo que aún no hemos vivido.</p>",
     categoria: "Carta",
     pista: "Entre el río Yaqui y el desierto, fundada en 1927 en honor a un caudillo."
@@ -127,11 +127,11 @@ const mensajes = {
     categoria: "Carta",
     pista: "Así va vestido nuestro hijo de tela cuando quiere cantar con estilo mexicano."
   },
-  "stevenuniverse": {
+  "steven": {
     texto: "<p>Te encontré como estrella fugaz, cruzando mi cielo sin avisar. Y desde entonces, amor brillante, ya nada volvió a ser igual.<br><br>Eres luz que canta sin miedo, mi escudo y mi verdad, como gema que vibra en mi pecho, como hogar que quiero cuidar.<br><br>No necesito magia en mis manos si tú estás para abrazar, porque contigo el mundo es claro y el dolor sabe descansar.<br><br>Tú y yo, dos almas fusionadas, en armonía celestial. No somos perfectos, pero juntos brillamos más allá del mal.</p>",
     videoEmbed: "https://www.youtube.com/embed/9CfY1xxbgSc?si=DheIOXMEQ2Ecvz2q",
     categoria: "Canción",
-    pista: "Creación de una artista estadounidense nacida en 1987 y transmitida a partir de 2013 en CN."
+    pista: "Personaje de una artista estadounidense nacida en 1987 y transmitido a partir de 2013 en CN."
   },
   "adriana": {
     texto: "<p>Amor, hay algo que me nace del corazón decirte: tengo muchas ganas de conocer a tu mamá. Quiero mirarla a los ojos y agradecerle por haberte traído al mundo, por haberte criado y por hacer posible que hoy estés en mi vida.<br><br>Siento que al conocerla, conoceré también una parte de ti que aún no he visto, porque todo lo que viene de ti lo quiero abrazar con todo mi cariño. Ojalá pronto llegue ese día.</p>",
