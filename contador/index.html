@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Tiempo Juntos</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💕</text></svg>">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Colores de Fondo y Texto */
+            --bg-light: linear-gradient(135deg, #fff5f5 0%, #fef2f2 50%, #fdf2f8 100%);
+            --bg-dark: linear-gradient(135deg, #1a1625 0%, #2d1b36 50%, #3c2a47 100%);
+            
+            --text-light: #4a5568;
+            --text-dark: #e2e8f0;
+            
+            /* Colores de Acento */
+            --accent-light: #ec4899; /* Rosa vibrante */
+            --accent-dark: #f472b6;  /* Rosa más claro */
+            
+            /* Efecto Glassmorphism */
+            --glass-light: rgba(255, 255, 255, 0.25);
+            --glass-dark: rgba(255, 255, 255, 0.1);
+            
+            /* Sombras */
+            --shadow-light: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            --shadow-dark: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+
+            /* Colores específicos para Vanta.js (Hexadecimales sin #) */
+            --vanta-highlight-light: 0xf472b6;
+            --vanta-midtone-light: 0xfef2f2;
+            --vanta-lowlight-light: 0xfdf2f8;
+            --vanta-base-light: 0xffffff;
+
+            --vanta-highlight-dark: 0x8b5a8c;
+            --vanta-midtone-dark: 0x2d1b36;
+            --vanta-lowlight-dark: 0x1a1625;
+            --vanta-base-dark: 0x0f0817;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-light);
+            overflow-x: hidden;
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1), color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body.dark {
+            background: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        
+        .crimson {
+            font-family: 'Crimson Text', serif;
+        }
+        
+        #vanta-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .main-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 50%;
+            background: var(--glass-light);
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            transition: all 0.3s ease, background 0.5s ease, box-shadow 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            box-shadow: var(--shadow-light);
+            color: var(--text-light); /* Para el color del SVG del icono */
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: var(--glass-dark); /* Un hover que se mantiene al cambiar el tema */
+        }
+        
+        .dark .theme-toggle {
+            background: var(--glass-dark);
+            box-shadow: var(--shadow-dark);
+            color: var(--text-dark);
+        }
+        
+        .heart-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInScale 1s ease-out 0.5s forwards, heartbeat 3s ease-in-out infinite;
+        }
+        
+        .main-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.8s forwards;
+            background: linear-gradient(45deg, var(--accent-light), #ec4899, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            transition: background 0.8s cubic-bezier(0.4, 0, 0.2, 1); /* Para una transición suave si el gradiente cambiara */
+        }
+        
+        .subtitle {
+            font-size: 1.25rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1.1s ease-out 1.1s forwards;
+        }
+        
+        .counter-card {
+            background: var(--glass-light);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 3rem;
+            box-shadow: var(--shadow-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            animation: fadeInScale 1s ease-out 1.4s forwards;
+            max-width: 900px;
+            width: 100%;
+            transition: background 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+        }
+        
+        .dark .counter-card {
+            background: var(--glass-dark);
+            box-shadow: var(--shadow-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .counter-grid {
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            align-items: flex-start; 
+            gap: 2rem; 
+            margin-bottom: 2rem;
+        }
+        
+        .time-unit {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease, background 0.5s ease, border-color 0.5s ease; /* Transiciones suaves */
+            position: relative;
+            overflow: hidden;
+            flex: 1 0 140px; 
+            max-width: 200px; 
+        }
+        
+        .time-unit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .time-unit:hover::before {
+            left: 100%;
+        }
+        
+        .time-unit:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .time-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--accent-light), #f472b6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            animation: numberPulse 2s ease-in-out infinite;
+        }
+        
+        .time-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+        }
+        
+        .footer-text {
+            text-align: center;
+            margin-top: 2rem;
+            opacity: 0.6;
+            font-size: 0.875rem;
+            animation: fadeIn 1s ease-out 1.7s forwards;
+        }
+        
+        .secret-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .secret-message {
+            background: var(--glass-light);
+            backdrop-filter: blur(20px);
+            border-radius: 2rem;
+            padding: 3rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-light);
+            max-width: 400px;
+            width: 90%;
+            transform: scale(0.9);
+            animation: popIn 0.5s ease-out 0.2s forwards;
+            transition: background 0.5s ease, box-shadow 0.5s ease, border-color 0.5s ease;
+            position: relative; /* Necesario para posicionar el botón de cierre */
+        }
+        
+        .dark .secret-message {
+            background: var(--glass-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-dark);
+        }
+
+        .secret-message .close-icon {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.5rem;
+            line-height: 1;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .dark .secret-message .close-icon {
+            color: var(--text-dark);
+        }
+
+        .secret-message .close-icon:hover {
+            color: var(--accent-light);
+            transform: scale(1.1);
+        }
+        
+        .secret-heart {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: heartbeat 1s ease-in-out infinite;
+        }
+        
+        .secret-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent-light), #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .secret-text {
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .close-btn {
+            background: linear-gradient(45deg, var(--accent-light), #f472b6);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes numberPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .counter-card {
+                padding: 2rem;
+            }
+            
+            .counter-grid {
+                gap: 1rem;
+            }
+            
+            .time-unit {
+                flex: 1 0 120px; 
+                max-width: unset; /* Permitir que ocupe el espacio necesario, se ajustará por flex-wrap */
+            }
+
+            .time-number {
+                font-size: 2rem;
+            }
+            
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 50px;
+                height: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .counter-grid {
+                gap: 0.75rem; 
+            }
+            
+            .time-unit {
+                flex: 1 0 100px; 
+                max-width: calc(50% - 0.75rem / 2); /* Para forzar 2 columnas con gap */
+            }
+
+            .time-number {
+                font-size: 1.75rem;
+            }
+            
+            .secret-message {
+                padding: 2rem;
+            }
+
+            .secret-message .close-icon {
+                font-size: 1.2rem;
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="vanta-bg"></div>
+    
+    <button class="theme-toggle" id="themeToggle" aria-label="Cambiar tema (claro/oscuro)">
+        <svg class="theme-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            </svg>
+    </button>
+    
+    <div class="main-container">
+        <div class="heart-icon">
+        </div>
+        
+        <h1 class="main-title crimson">Nuestro Tiempo Juntos</h1>
+        <p class="subtitle">Desde el 9 de noviembre de 2024</p>
+        
+        <div class="counter-card" id="counterCard">
+            <div class="counter-grid" id="counterGrid">
+                </div>
+            <div class="footer-text">
+                Mantén presionado el contador por unos segundos... 
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.fog.min.js"></script>
+
+    <script>
+        // Theme Management
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        const rootStyles = getComputedStyle(document.documentElement); // Para leer variables CSS
+
+        const sunIcon = `<circle cx="12" cy="12" r="5"></circle><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>`;
+        const moonIcon = `<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>`;
+
+        // Helper para obtener colores de Vanta de variables CSS
+        function getVantaColor(varName) {
+            const color = rootStyles.getPropertyValue(varName).trim();
+            // parseInt con base 16 para convertir de hexadecimal a número (quitando '0x' si existe)
+            return parseInt(color.replace('0x', ''), 16); 
+        }
+
+        // Function to set theme and update icon
+        function setTheme(dark) {
+            localStorage.setItem('theme', dark ? 'dark' : 'light');
+            body.classList.toggle('dark', dark);
+            
+            const icon = themeToggle.querySelector('.theme-icon');
+            if (icon) { 
+                icon.innerHTML = dark ? moonIcon : sunIcon;
+            }
+            
+            // Update Vanta colors if Vanta.js is initialized
+            if (window.vantaEffect) {
+                window.vantaEffect.setOptions(dark ? {
+                    highlightColor: getVantaColor('--vanta-highlight-dark'),
+                    midtoneColor: getVantaColor('--vanta-midtone-dark'),
+                    lowlightColor: getVantaColor('--vanta-lowlight-dark'),
+                    baseColor: getVantaColor('--vanta-base-dark')
+                } : {
+                    highlightColor: getVantaColor('--vanta-highlight-light'),
+                    midtoneColor: getVantaColor('--vanta-midtone-light'),
+                    lowlightColor: getVantaColor('--vanta-lowlight-light'),
+                    baseColor: getVantaColor('--vanta-base-light')
+                });
+            }
+        }
+
+        // Initialize theme: check localStorage first, then default to dark if no preference saved
+        const savedTheme = localStorage.getItem('theme');
+        let initialThemeIsDark;
+        if (savedTheme === 'dark') {
+            initialThemeIsDark = true;
+        } else if (savedTheme === 'light') {
+            initialThemeIsDark = false;
+        } else {
+            // Default to dark mode if no preference is saved in localStorage
+            initialThemeIsDark = true; 
+        }
+        setTheme(initialThemeIsDark);
+        
+        // Event listener for theme toggle button
+        themeToggle.addEventListener('click', () => {
+            setTheme(!body.classList.contains('dark'));
+        });
+        
+        // Initialize Vanta.js
+        // Se llama en DOMContentLoaded porque los scripts Vanta.js ahora son síncronos
+        // y se garantiza que estén cargados cuando el DOM esté listo.
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica que VANTA y THREE estén cargados y que Vanta no se haya inicializado ya
+            if (window.VANTA && window.THREE && !window.vantaEffect) {
+                window.vantaEffect = VANTA.FOG({
+                    el: "#vanta-bg",
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false, // Mejor para rendimiento en móviles
+                    minHeight: 200,
+                    minWidth: 200,
+                    // Establecer colores iniciales basados en el tema actual
+                    highlightColor: body.classList.contains('dark') ? getVantaColor('--vanta-highlight-dark') : getVantaColor('--vanta-highlight-light'),
+                    midtoneColor: body.classList.contains('dark') ? getVantaColor('--vanta-midtone-dark') : getVantaColor('--vanta-midtone-light'),
+                    lowlightColor: body.classList.contains('dark') ? getVantaColor('--vanta-lowlight-dark') : getVantaColor('--vanta-lowlight-light'),
+                    baseColor: body.classList.contains('dark') ? getVantaColor('--vanta-base-dark') : getVantaColor('--vanta-base-light'),
+                    blurFactor: 0.4,
+                    speed: 0.8,
+                    zoom: 1.2
+                });
+            }
+        });
+        
+        // Counter Logic
+        // Utiliza una fecha que ya haya pasado para ver el contador en acción
+        const startDate = new Date('2024-11-09T00:00:00'); 
+        const counterGrid = document.getElementById('counterGrid');
+        
+        function updateCounter() {
+            const now = new Date();
+            
+            let years = now.getFullYear() - startDate.getFullYear();
+            let months = now.getMonth() - startDate.getMonth();
+            let days = now.getDate() - startDate.getDate();
+
+            // Ajustar días si es negativo (el día actual es menor que el día de inicio)
+            if (days < 0) {
+                months--;
+                // Calcular el último día del mes anterior a la fecha actual para obtener los días correctos
+                const lastDayOfPrevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                days = lastDayOfPrevMonth + days; 
+            }
+            // Ajustar meses si es negativo
+            if (months < 0) {
+                years--;
+                months += 12;
+            }
+
+            // Calcular las horas, minutos y segundos restantes desde el punto de la última unidad completa
+            // Se crea una fecha temporal para asegurar que el cálculo de horas/minutos/segundos sea preciso
+            const tempDate = new Date(startDate.getFullYear() + years, 
+                                      startDate.getMonth() + months, 
+                                      startDate.getDate() + days,
+                                      startDate.getHours(),
+                                      startDate.getMinutes(),
+                                      startDate.getSeconds());
+            
+            let remainingMillis = now.getTime() - tempDate.getTime();
+
+            const hours = Math.floor(remainingMillis / (1000 * 60 * 60));
+            remainingMillis %= (1000 * 60 * 60);
+            
+            const minutes = Math.floor(remainingMillis / (1000 * 60));
+            remainingMillis %= (1000 * 60);
+            
+            const seconds = Math.floor(remainingMillis / 1000);
+            
+            const timeUnits = [
+                { value: years, label: years === 1 ? 'año' : 'años' },
+                { value: months, label: months === 1 ? 'mes' : 'meses' },
+                { value: days, label: days === 1 ? 'día' : 'días' },
+                { value: hours, label: hours === 1 ? 'hora' : 'horas' },
+                { value: minutes, label: minutes === 1 ? 'minuto' : 'minutos' },
+                { value: seconds, label: seconds === 1 ? 'segundo' : 'segundos' }
+            ];
+            
+            // Filtrar unidades que tienen un valor mayor que 0 para no mostrar "0 días", "0 horas", etc.
+            let visibleUnits = timeUnits.filter(unit => unit.value > 0);
+            // Si no hay ninguna unidad con valor > 0 (por ejemplo, si la fecha es hoy, pero aún no ha pasado 1 segundo)
+            // Mostrar "0 segundos" para asegurar que el contador siempre tenga un valor visible.
+            if (visibleUnits.length === 0) {
+                visibleUnits = [{ value: 0, label: 'segundos' }];
+            }
+
+            // Generar el HTML para las unidades del contador
+            counterGrid.innerHTML = visibleUnits.map(unit => `
+                <div class="time-unit">
+                    <div class="time-number crimson">${unit.value}</div>
+                    <div class="time-label">${unit.label}</div>
+                </div>
+            `).join('');
+        }
+        
+        // Secret Message Logic
+        let holdTimer;
+        let isHolding = false;
+        
+        // Inicia el temporizador de "mantener presionado"
+        function startHold() {
+            isHolding = true;
+            holdTimer = setTimeout(() => {
+                if (isHolding) showSecretMessage();
+            }, 3000); // 3 segundos para activar el mensaje
+        }
+        
+        // Detiene y limpia el temporizador de "mantener presionado"
+        function endHold() {
+            isHolding = false;
+            clearTimeout(holdTimer);
+        }
+        
+        // Muestra el mensaje secreto
+        function showSecretMessage() {
+            // Evita que se muestren múltiples overlays si ya hay uno
+            if (document.querySelector('.secret-overlay')) return;
+
+            const overlay = document.createElement('div');
+            overlay.className = 'secret-overlay';
+            overlay.innerHTML = `
+                <div class="secret-message">
+                    <button class="close-icon" onclick="hideSecretMessage()">&#x2715;</button> <div class="secret-heart">💕</div>
+                    <h2 class="secret-title crimson">Mensaje Secreto</h2>
+                    <p class="secret-text">Te amo más cada minuto que pasa... ❤️</p>
+                    <button class="close-btn" onclick="hideSecretMessage()">Cerrar</button>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Cierre automático del mensaje después de 5 segundos
+            setTimeout(() => {
+                if (document.body.contains(overlay)) { // Verificar si el overlay sigue en el DOM antes de intentar removerlo
+                    hideSecretMessage();
+                }
+            }, 5000);
+        }
+        
+        // Oculta el mensaje secreto
+        function hideSecretMessage() {
+            const overlay = document.querySelector('.secret-overlay');
+            if (overlay) overlay.remove(); // Remueve el overlay si existe
+        }
+        
+        // Event listeners para la interacción del contador (presionar/soltar)
+        const counterCard = document.getElementById('counterCard');
+
+        // Eventos para ratón (desktop)
+        counterCard.addEventListener('mousedown', startHold);
+        counterCard.addEventListener('mouseup', endHold);
+        counterCard.addEventListener('mouseleave', endHold); // Si el cursor sale del elemento mientras se mantiene presionado
+
+        // Eventos para dispositivos táctiles (móviles)
+        counterCard.addEventListener('touchstart', startHold, { passive: false }); // `passive: false` para permitir `e.preventDefault()`
+        counterCard.addEventListener('touchend', endHold);
+        counterCard.addEventListener('touchcancel', endHold); // Si el toque se interrumpe (ej. llamada entrante)
+
+        // Prevenir el menú contextual (clic derecho o mantener presionado en móvil) en la tarjeta del contador
+        counterCard.addEventListener('contextmenu', (e) => {
+            if (isHolding) { // Solo prevenir si se está intentando activar el "hold"
+                e.preventDefault();
+            }
+        });
+        
+        // Hacer la función hideSecretMessage accesible globalmente para el botón 'Cerrar' y el icono 'X'
+        window.hideSecretMessage = hideSecretMessage;
+        
+        // Inicializar el contador al cargar la página y actualizar cada segundo
+        updateCounter();
+        setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>
