@@ -597,6 +597,64 @@ function importarProgreso(archivo) {
   reader.readAsText(archivo);
 }
 
+// --- Resetear progreso ---
+const resetProgressBtn = document.getElementById('resetProgressBtn');
+
+function resetearProgreso() {
+  if (!confirm("¿Seguro que quieres borrar todo tu progreso?\nSe eliminarán:\n✔ Códigos desbloqueados\n✔ Favoritos\n✔ Logros\n✔ Pistas usadas\n✔ Intentos fallidos\n✔ Tema oscuro\n\nEsto NO se puede deshacer.")) {
+    return;
+  }
+
+  try {
+    // Borrar almacenamiento local
+    localStorage.removeItem("desbloqueados");
+    localStorage.removeItem("favoritos");
+    localStorage.removeItem("logrosAlcanzados");
+    localStorage.removeItem("failedAttempts");
+    localStorage.removeItem("ultimoCodigoPista");
+    localStorage.removeItem("isMusicPlaying");
+    localStorage.removeItem("theme");
+
+    // Borrar variables en memoria
+    desbloqueados = new Set();
+    logrosAlcanzados = new Set();
+    favoritos = new Set();
+    failedAttempts = 0;
+
+    // Resetear UI
+    document.body.classList.remove("dark-mode");
+    if (darkModeToggle) {
+      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo oscuro';
+    }
+
+    if (bgMusic) {
+      bgMusic.pause();
+      bgMusic.currentTime = 0;
+    }
+    if (musicToggleBtn) musicToggleBtn.classList.remove('playing');
+    if (musicToggleIcon) {
+      musicToggleIcon.classList.remove('fa-volume-up');
+      musicToggleIcon.classList.add('fa-volume-mute');
+    }
+
+    if (contenidoDiv) contenidoDiv.hidden = true;
+
+    actualizarProgreso();
+    actualizarListaDesbloqueados();
+
+    showAchievementToast("Todo el progreso ha sido restablecido.");
+  } catch (e) {
+    console.error("Error al resetear progreso:", e);
+    alert("Hubo un problema al restablecer el progreso.");
+  }
+
+  cerrarMenu();
+}
+
+if (resetProgressBtn) {
+  resetProgressBtn.addEventListener("click", resetearProgreso);
+}
+
 // Listeners
 if (exportProgressBtn) {
   exportProgressBtn.addEventListener('click', () => {
