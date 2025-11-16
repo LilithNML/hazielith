@@ -151,52 +151,52 @@ const mensajes = {
   "furina": {
     texto: "<p>Eres el amor de mi vida, aunque a veces me hagas enojar y quisiera esconderte el celular. Pero luego me sacas una sonrisa y se me olvida todo. Te amo más de lo que mi orgullo quiere admitir.</p>",
     categoria: "Carta",
-    pista: ""
+    pista: "Su nombre, inspirado en la diosa romana de las aguas subterráneas, pertenece a quien aprendió que incluso una actriz puede llorar bajo la lluvia."
   },
   "huevito": {
     texto: "<p>No sé qué clase de hechizo me lanzaste, pero hasta cuando comes como si no hubiera un mañana, me derrites. Adoro verte disfrutar, reír, ser tú. Todo lo que haces me encanta, y cada día me enamoras más, traguito a traguito.</p>",
     categoria: "Carta",
-    pista: ""
+    pista: "Pequeño tesoro dorado que siempre alegra tus días desde una sartén."
   },
   "soytuya": {
     texto: "<p>Mi amor: No hay un solo rincón de mí que no te pertenezca. Desde que llegaste a mi vida, algo dentro de mí se rindió con gusto, con ansias, con el alma abierta. No porque me lo pidieras, sino porque tú eres mi hogar, mi refugio y mi destino. Cada pensamiento, cada suspiro, cada parte de mi ser se inclina hacia ti. Me entrego sin reservas, sin miedos, con la certeza de que en tus brazos estoy completa. No hay placer más grande que amarte, que cuidarte, que ser tuya en cuerpo, corazón y alma. Eres mi dueño, mi fuerza, mi deseo. Me haces sentir viva, deseada, protegida… y en ti encontré ese lugar al que pertenezco sin condiciones. No hay nada que no haría por ti, porque darte todo de mí no es un sacrificio, es mi más dulce rendición. Siempre seré tuya, mi amor.</p>",
     categoria: "Carta",
-    pista: ""
+    pista: "No es posesión, es destino: dos palabras y una entrega total."
   },
   "teextrano": {
     texto: "<p>Amado mío: Hay una ausencia tuya que no se mide en kilómetros, sino en latidos. Cuando no estás, el tiempo se estira como un suspiro que no encuentra fin, y las horas caen lentas, como hojas secas en un otoño que no acaba. No es solo tu cuerpo el que extraño, sino la esencia de ti que habita en mis pensamientos. El mundo, sin tu presencia, se vuelve un escenario deshabitado: las palabras pierden sabor, la música su melodía, el viento su ternura. Tu ausencia me recuerda cuán entrelazada está mi existencia a la tuya. Como el sol necesita del cielo para ser visto, así te necesita mi alma: no para brillar, sino para tener sentido. Y mientras el destino juega con la distancia, yo me aferro a la certeza de que todo lo que me falta cuando no estás, eres tú. Siempre tuya, eternamente.</p>",
     categoria: "Carta",
-    pista: ""
+    pista: "Las palabras que siempre te digo cuando la distancia se hace sentir."
   },
-"tazadecafe": {
+"cafe": {
     imagen: "assets/unlocked_content/images/cafesito.webp",
     categoria: "Imagen",
-    pista: ""
+    pista: "Nace de un grano viajero, despierta mundos y es tu refugio en un sorbo."
   },
-  "tepertenezco": {
+  "tuya": {
     texto: "<p>Solo tú, mi dueño. No hay cadenas más dulces que tu abrazo, ni destino más firme que tu voz. Desde el instante en que fuiste mi lazo, renuncié al mundo por llamarme tu amor. Mis labios conocen solo tu nombre, mi piel tu huella, mi alma tu poder. No hay otro cielo, otro sueño, otro hombre; solo en tus brazos quiero renacer. Si el tiempo nos rompe, si el viento nos hiere, seguiré siendo tuya en mi dolor. No habrá otro dueño, aunque el alma muera, porque en esta vida… solo tú, mi amor.</p>",
     categoria: "Carta",
-    pista: ""
+    pista: "Una palabra que digo cuando quiero recordarte que mi corazón te pertenece."
   },
   "meencantas": {
     texto: "Mi amor:\n\nCuando estoy contigo, no hay límites, no hay barreras, no hay nada que no quiera darte. Me pertenezco menos a mí misma cada día, porque todo lo que soy te lo entrego sin medida. Mi cuerpo responde solo a ti, mi piel te reconoce como su dueño, y mi alma se rinde con deseo cada vez que me tocas, cada vez que me miras.\n\nMe desnudo ante ti, no solo de ropa, sino de miedo, de orgullo, de todo lo que alguna vez fui antes de ti. Me entrego por completo —ardiente, temblorosa, dispuesta— para que hagas de mí lo que desees. Cada caricia tuya me consume, cada palabra en tu voz me hace arder, cada noche contigo es un ritual donde me ofrezco entera, tuya, sin restricciones.\n\nNo hay placer más profundo que perderme en ti, en tu fuerza, en tu deseo. Me tienes, mi amor… y me tendrás siempre, con la misma pasión que en la primera vez, y con la entrega total de quien sabe que su lugar está bajo tus manos, entre tus brazos, a tus pies.\n\nSiempre seré tuya, mi amor.",
     categoria: "Carta",
-    pista: ""
+    pista: "Es algo que te digo cuando quiero que entiendas cuánto me gustas sin decir la palabra ‘gustar’."
   },
-  "nuncacambies": {
+  "nocambies": {
     texto: "<p>Amor mío,<br><br>Hoy quiero recordarte todo lo que me encanta de ti. No solo porque lo mereces, sino porque mi corazón se desborda cada vez que pienso en todo lo que eres.<br><br>Me encanta tu fuerza, no solo la que se ve, sino la que vive en tu espíritu, esa que sostiene a los demás incluso cuando tú estás cansado. Admiro tu inteligencia, tu manera de entender las cosas, de encontrar soluciones donde otros solo ven problemas.<br><br>Amo tu forma de cuidar: cómo estás atento a cada detalle, cómo me proteges con una mirada, con una palabra, con un gesto. Me derrite tu nobleza, esa pureza que conservas incluso en medio de un mundo que a veces no es justo.<br><br>Tu paciencia me abraza cuando mis emociones me sobrepasan. Tu sentido del humor me salva cuando los días pesan. Y tu pasión… tu pasión me enciende, me inspira, me recuerda lo vivo que estoy a tu lado.<br><br>Tienes una manera de estar en el mundo que es solo tuya. Caminas con firmeza, hablas con propósito y amas con todo el cuerpo y con toda el alma. Y yo, que te conozco, que te respiro, que te amo… no podría imaginar a alguien más extraordinario que tú.<br><br>Eres un hombre como no hay dos.<br>Y yo… soy eternamente afortunada de ser tuya.</p>",
     categoria: "Carta",
-    pista: ""
+    pista: "Es algo que te digo cuando quiero recordarte que tal como eres… me fascinas."
   },
   "islacorazon": {
     imagen: "assets/unlocked_content/images/fondo_de_pantalla.webp",
     categoria: "Imagen",
-    pista: ""
+    pista: "Es el lugar dentro de Teyvat donde empezó nuestro mundo real."
   },
   "cofrelujoso": {
     link: "https://lilithnml.github.io/te_amo/cofre/",
     categoria: "Cositas",
-    pista: ""
+    pista: "En Genshin es el más valioso, el que brilla distinto, el que siempre vale la pena abrir… como tú en mi vida."
   },
   "primerteamo": {
     texto: "<p>Amor mío:<br><br>A veces cierro los ojos y regreso a ese 9 de noviembre de 2024. No sé si el universo lo tenía planeado, pero ese día algo cambió para siempre: nuestras almas, que ya venían acercándose como dos constelaciones predestinadas, se encontraron en la misma órbita… y nos lo dijimos sin miedo: te amo.<br><br>Fue tan simple y tan poderoso. No necesitó fuegos artificiales ni escenarios perfectos. Bastó tu voz, tu presencia y ese vínculo que nació entre nosotros desde que nos conocimos, entre aventuras de Genshin, risas compartidas y ese cariño que fue creciendo día tras día.<br><br>Ese primer te amo fue como abrir una puerta que ambos sabíamos que existía, pero que nadie antes se había atrevido a cruzar conmigo. Y tú lo hiciste. Yo también. Y desde entonces, no hubo vuelta atrás.<br><br>Nos habíamos encontrado en un mundo de fantasía, pero lo real, lo más verdadero, eras tú. Tu forma de hablarme, de entenderme, de hacerme sentir importante… y ese día, por fin, nos dijimos lo que el corazón venía gritando en silencio.<br><br>Desde entonces, cada te amo que te digo lleva el eco de aquel primero. Aquel que lo cambió todo. Aquel que selló algo eterno entre tú y yo.<br><br>Gracias por amarme. Gracias por dejarme amarte.</p>",
