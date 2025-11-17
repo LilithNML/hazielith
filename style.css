@@ -12,7 +12,7 @@
   --text-dark: #E0CFC1; /* Color de texto para elementos de lista */
   --header-color: #BCBDB9; /* Color para títulos */
   --background-overlay: rgba(32, 30, 43, 0.7); /* Oscuro con transparencia para superposición */
-  --container-bg: rgba(32, 30, 43, 0.55); /* Oscuro con más opacidad para el contenedor */
+  --container-bg: rgba(32, 30, 43, 0.40); /* Oscuro con más opacidad para el contenedor */
   --content-bg: #1E2021; /* Fondo del área de contenido */
   --border-color-input: #8E7383; /* Borde de los campos de entrada */
   --input-bg: #6B5D74; /* Fondo de los campos de entrada */
