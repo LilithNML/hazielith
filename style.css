@@ -583,11 +583,15 @@ h1 {
   visibility: visible;
 }
 
-.dropdown-menu a, .dropdown-menu button {
+/* Micro-interacciones modernas del menú */
+.dropdown-menu a,
+.dropdown-menu button {
   color: var(--text-light);
   padding: 12px 20px;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 12px;
   text-align: left;
   background: none;
   border: none;
@@ -595,12 +599,32 @@ h1 {
   font-family: var(--primary-font);
   font-size: 1.1em;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+
+  transition:
+    background 0.28s ease,
+    color 0.25s ease,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.dropdown-menu a:hover, .dropdown-menu button:hover {
-  background-color: var(--button-bg-hover);
+/* Hover con efecto de desplazamiento suave */
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(6px);
   color: var(--highlight-pink);
+}
+
+/* Accesibilidad con teclado */
+.dropdown-menu a:focus-visible,
+.dropdown-menu button:focus-visible {
+  outline: 2px solid var(--highlight-pink);
+  outline-offset: 4px;
+}
+
+/* Modo oscuro — hover adaptado */
+body.dark-mode .dropdown-menu a:hover,
+body.dark-mode .dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.10);
 }
 
 .dropdown-menu button i {
