@@ -105,6 +105,7 @@ body {
   margin: 4rem auto 2rem auto; /* Margen superior e inferior para espacio */
   position: relative;
   overflow: hidden; /* Asegura que el contenido no se salga */
+  backdrop-filter: blur(8px); /* Efecto vidrio */
 }
 
 /* Encabezado */
