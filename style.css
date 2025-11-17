@@ -178,7 +178,9 @@ h1 {
   padding: 15px 25px;
   font-size: 1.1em;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition: background-color 0.3s ease,
+            transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.25s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
