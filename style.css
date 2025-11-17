@@ -38,7 +38,7 @@ body.dark-mode {
   --text-dark: #F5E9E4;
   --header-color: #E0CFC1;
   --background-overlay: rgba(0, 0, 0, 0.8);
-  --container-bg: rgba(10, 10, 10, 0.9);
+  --container-bg: rgba(10, 10, 10, 0.5);
   --content-bg: #111111;
   --border-color-input: #5A5A5A;
   --input-bg: #2C2C2C;
