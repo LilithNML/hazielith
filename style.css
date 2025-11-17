@@ -96,16 +96,20 @@ body {
 /* Contenedor principal del contenido */
 .container {
   background-color: var(--container-bg);
-  padding: 2.5rem; /* Ajuste de padding para pantallas grandes */
+  padding: 2.5rem;
   border-radius: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   text-align: center;
-  max-width: 900px; /* Ancho máximo para legibilidad */
-  width: 90%; /* Ancho responsivo */
-  margin: 4rem auto 2rem auto; /* Margen superior e inferior para espacio */
+  max-width: 900px;
+  width: 90%;
+  margin: 4rem auto 2rem auto;
   position: relative;
-  overflow: hidden; /* Asegura que el contenido no se salga */
-  backdrop-filter: blur(8px); /* Efecto vidrio */
+  overflow: hidden;
+  
+  /* Glassmorphism suave */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px) saturate(120%);
+  -webkit-backdrop-filter: blur(8px) saturate(120%);
 }
 
 /* Encabezado */
