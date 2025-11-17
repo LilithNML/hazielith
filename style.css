@@ -19,7 +19,8 @@
   --button-bg-initial: #9A8C8B; /* Fondo inicial del botón */
   --button-bg-hover: #3F3938; /* Fondo del botón al pasar el mouse */
   --progress-color: #A3C3BD; /* Color de la barra de progreso */
-  --highlight-pink: #FF69B4; /* Rosa para elementos destacados */
+  --highlight-pink: #ff7aa8; /* Rosa para elementos destacados */
+  --highlight-pink-light: #ffaed0;
   --highlight-green: #A3C3BD; /* Verde para éxito */
   --highlight-red: #E74C3C; /* Rojo para error */
   --link-color: #FFC0CB; /* Color de enlaces */
