@@ -33,9 +33,9 @@
 
 /* Variables para el Modo Oscuro */
 body.dark-mode {
-  --text-light: #E0CFC1;
-  --text-medium: #C5BCB6;
-  --text-dark: #F5E9E4;
+  --text-light: #f2e6df;
+  --text-medium: #d8ccc3;
+  --text-dark: #fff4ec;
   --header-color: #E0CFC1;
   --background-overlay: rgba(0, 0, 0, 0.8);
   --container-bg: rgba(10, 10, 10, 0.5);
