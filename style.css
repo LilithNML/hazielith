@@ -847,3 +847,22 @@ input[type="text"]:focus {
     background: rgba(255,255,255,0.35);
 }
 
+.modal {
+  backdrop-filter: blur(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-content {
+  border-radius: 15px;
+  animation: popIn 0.35s ease forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+h1:hover, h2:hover {
+   transform: scale(1.01);
+   transition: transform 0.25s ease;
+}
