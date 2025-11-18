@@ -449,28 +449,53 @@ h1 {
 /* Botón de música */
 
 .music-toggle {
+  /* Posición fija en la esquina inferior derecha */
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 15px;
+  right: 15px;
+
+  /* Dimensiones y estilos base */
+  width: 50px;
+  height: 50px;
+  font-size: 1.3em;
   background: var(--highlight-pink);
   padding: 14px;
   border-radius: 50%;
   cursor: pointer;
+  
+  /* Transiciones para efectos suaves */
   transition: transform 0.2s ease, box-shadow 0.25s ease;
 }
 
 .music-toggle:hover {
+   /* Efecto al pasar el ratón */
    transform: scale(1.12) translateY(-3px);
    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 .music-toggle i {
+  /* Transición del icono */
   transition: transform 0.3s ease;
 }
 
 .music-toggle.playing i {
-  animation: pulse 1.5s infinite; /* Animación para indicar que está sonando */
+  /* Animación de pulso cuando la música está sonando */
+  animation: pulse 0.7s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
+
+@keyframes pulse {
+  /* Define el efecto de pulsación sutil */
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 
 /* Modal de imagen */
 .modal {
