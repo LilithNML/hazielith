@@ -891,3 +891,174 @@ h1:hover, h2:hover {
    transform: scale(1.01);
    transition: transform 0.25s ease;
 }
+
+/* Panel de audio lateral */
+.audio-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 300px;
+  height: 100%;
+  background: var(--container-bg);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: -4px 0 18px rgba(0,0,0,0.5);
+  padding: 20px;
+  z-index: 2000;
+  transition: right 0.4s cubic-bezier(.25,.8,.25,1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.audio-panel.show {
+  right: 0;
+  opacity: 1;
+}
+
+/* Encabezado */
+.audio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.audio-header h3 {
+  color: var(--header-color);
+  font-size: 1.5em;
+}
+
+.close-audio-btn {
+  background: none;
+  border: none;
+  font-size: 1.3em;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.close-audio-btn:hover {
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Info pista */
+.audio-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#currentTrackName {
+  font-size: 1.2em;
+  color: var(--text-medium);
+}
+
+/* Controles */
+.audio-controls {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.audio-btn {
+  background: var(--button-bg-initial);
+  border: none;
+  color: var(--text-light);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.audio-btn:hover {
+  background: var(--highlight-pink);
+  transform: scale(1.1);
+}
+
+.audio-btn.small {
+  padding: 10px;
+  font-size: 0.9em;
+}
+
+/* Volumen */
+.volume-section {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--text-medium);
+}
+
+#audioVolume {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Opciones */
+.audio-options {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* ----- Forzar color dorado en favoritos (alta especificidad y compatibilidad) ----- */
+
+/* Aplica a <i class="fas ...">, <svg> (fa SVG), y texto rellenable */
+
+.favorite-toggle-btn i.fas,
+
+.favorite-toggle-btn.active i.fas,
+
+.favorite-toggle-btn.favorited i.fas,
+
+.favorite-toggle-btn[aria-pressed="true"] i.fas,
+
+.favorite-toggle-btn.active svg,
+
+.favorite-toggle-btn.favorited svg,
+
+.favorite-toggle-btn[aria-pressed="true"] svg {
+
+  color: var(--favorite-icon-active) !important;
+
+  -webkit-text-fill-color: var(--favorite-icon-active) !important; /* Safari */
+
+  fill: var(--favorite-icon-active) !important; /* para SVGs que usan fill */
+
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.25)) !important;
+
+  transform: scale(1.15);
+
+}
+
+/* Asegurar que el icono vacío se vea neutral */
+
+.favorite-toggle-btn i.far,
+
+.favorite-toggle-btn .far {
+
+  color: var(--favorite-icon-default) !important;
+
+  fill: none !important;
+
+}
+
+/* Transiciones suaves */
+
+.favorite-toggle-btn i,
+
+.favorite-toggle-btn svg {
+
+  transition: color 180ms ease, transform 180ms ease, filter 220ms ease;
+
+}
+
+/* Si alguna regla inline o de FontAwesome bloquea, forzamos la prioridad con un selector aún más específico */
+
+body .lista-codigos li .favorite-toggle-btn.active i.fas {
+
+  color: var(--favorite-icon-active) !important;
+
+  -webkit-text-fill-color: var(--favorite-icon-active) !important;
+
+  fill: var(--favorite-icon-active) !important;
+
+}
