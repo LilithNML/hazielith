@@ -22,7 +22,6 @@
   <link rel="preload" as="image" href="assets/images/moon.png">
   <link rel="preload" as="audio" href="assets/audio/correct.mp3">
   <link rel="preload" as="audio" href="assets/audio/incorrect.mp3">
-  <link rel="preload" as="audio" href="assets/audio/musica-fondo.mp3">
   </head>
 <body>
   <div class="background-overlay" aria-hidden="true"></div>
@@ -46,6 +45,9 @@
   </button>
         <button id="darkModeToggle" class="dropdown-item" aria-label="Alternar modo oscuro/claro">
     <i class="fas fa-moon"></i> Modo oscuro
+        </button>
+        <button id="audioSettingsBtn" class="dropdown-item" aria-label="Controlar música">
+  <i class="fas fa-music"></i> Audio
         </button>
   <button id="exportProgressBtn" class="dropdown-item" aria-label="Exportar progreso">
     <i class="fas fa-upload"></i> Exportar
@@ -107,12 +109,9 @@
 
   <audio id="correctSound" src="assets/audio/correct.mp3" preload="auto"></audio>
   <audio id="incorrectSound" src="assets/audio/incorrect.mp3" preload="auto"></audio>
-  <audio id="bgMusic" src="assets/audio/musica-fondo.mp3" loop preload="auto"></audio>
+  <audio id="bgMusic" preload="auto"></audio>
   <audio id="codeAudio" preload="auto"></audio>
 
-  <button id="musicToggle" class="music-toggle" aria-label="Controlar música de fondo">
-    <i class="fas fa-volume-up"></i>
-  </button>
 
   <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
     <h2 id="modalTitle" class="sr-only">Imagen Desbloqueada</h2>
@@ -120,6 +119,36 @@
     <img id="modalImg" src="" alt="Imagen desbloqueada" class="modal-content">
     <p id="modalCaption" class="modal-caption"></p>
   </div>
+  
+<div id="audioPanel" class="audio-panel" aria-hidden="true">
+  <div class="audio-header">
+    <h3>Reproductor</h3>
+    <button id="closeAudioPanel" class="close-audio-btn" aria-label="Cerrar panel">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
 
-  <script src="data.js"></script> <script src="script.js"></script> </body>
+  <div class="audio-info">
+    <p id="currentTrackName">music1</p>
+  </div>
+
+  <div class="audio-controls">
+    <button id="prevTrackBtn" class="audio-btn"><i class="fas fa-backward"></i></button>
+    <button id="playPauseBtn" class="audio-btn"><i class="fas fa-play"></i></button>
+    <button id="nextTrackBtn" class="audio-btn"><i class="fas fa-forward"></i></button>
+  </div>
+
+  <div class="volume-section">
+    <label for="audioVolume">Volumen</label>
+    <input id="audioVolume" type="range" min="0" max="1" step="0.01">
+  </div>
+
+  <div class="audio-options">
+    <button id="muteBtn" class="audio-btn small"><i class="fas fa-volume-mute"></i></button>
+    <button id="shuffleBtn" class="audio-btn small"><i class="fas fa-random"></i></button>
+  </div>
+</div>
+  
+  <script src="https://codepen.io/ocieuogz-the-sasster/pen/jEqwEvg.js"></script> <script src="script.js"></script> 
+</body>
 </html>
