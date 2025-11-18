@@ -1,9 +1,11 @@
-// script.js (versión completa, defensiva y con pistas aleatorias)
-// Requiere que data.js defina globalmente:
-// const mensajes = { ... }
-// const logros = [ ... ]
+/******************************************************
+ *  SCRIPT.JS — VERSIÓN COMPLETA, ORDENADA Y CORREGIDA
+ *  PARTE 1 / 3
+ ******************************************************/
 
-// --- Referencias al DOM (defensivas) ---
+/* ----------------------------------------------------
+   Referencias al DOM (defensivas)
+---------------------------------------------------- */
 const codeInput = document.getElementById("codeInput");
 const submitCodeBtn = document.getElementById("submitCodeBtn");
 const contenidoDiv = document.getElementById("contenido");
@@ -13,410 +15,548 @@ const bgMusic = document.getElementById("bgMusic");
 const codeAudio = document.getElementById("codeAudio");
 const progresoParrafo = document.getElementById("progreso");
 const progressBarFill = document.querySelector(".progress-bar-fill");
-const musicToggleBtn = document.getElementById("musicToggle");
-const musicToggleIcon = musicToggleBtn ? musicToggleBtn.querySelector('i') : null;
+
 const toggleUnlockedCodesBtn = document.getElementById("toggleUnlockedCodes");
 const unlockedCodesPanel = document.getElementById("unlockedCodesPanel");
 const unlockedCodesList = document.getElementById("unlockedCodesList");
 const searchUnlockedCodesInput = document.getElementById("searchUnlockedCodes");
 const categoryFilterSelect = document.getElementById("categoryFilter");
+
 const imageModal = document.getElementById("imageModal");
 const modalImg = document.getElementById("modalImg");
 const modalCaption = document.getElementById("modalCaption");
-const menuButton = document.getElementById('menuButton');
-const dropdownMenu = document.getElementById('dropdownMenu');
-const achievementToastContainer = document.getElementById('achievement-toast-container');
-const darkModeToggle = document.getElementById('darkModeToggle');
-const showFavoritesBtn = document.getElementById('showFavoritesBtn');
-const filterFavoritesBtn = document.getElementById('filterFavoritesBtn');
 
-// --- Variables de estado ---
+const menuButton = document.getElementById("menuButton");
+const dropdownMenu = document.getElementById("dropdownMenu");
+
+const achievementToastContainer = document.getElementById("achievement-toast-container");
+
+const darkModeToggle = document.getElementById("darkModeToggle");
+const showFavoritesBtn = document.getElementById("showFavoritesBtn");
+const filterFavoritesBtn = document.getElementById("filterFavoritesBtn");
+
+/* Reproductor lateral */
+const audioPanel = document.getElementById("audioPanel");
+const audioSettingsBtn = document.getElementById("audioSettingsBtn");
+const closeAudioPanel = document.getElementById("closeAudioPanel");
+
+const playPauseBtn = document.getElementById("playPauseBtn");
+const nextTrackBtn = document.getElementById("nextTrackBtn");
+const prevTrackBtn = document.getElementById("prevTrackBtn");
+const muteBtn = document.getElementById("muteBtn");
+const shuffleBtn = document.getElementById("shuffleBtn");
+const audioVolume = document.getElementById("audioVolume");
+const currentTrackName = document.getElementById("currentTrackName");
+
+/* ----------------------------------------------------
+   Estado / almacenamiento local
+---------------------------------------------------- */
 let failedAttempts = parseInt(localStorage.getItem("failedAttempts") || "0", 10);
 const MAX_FAILED_ATTEMPTS = 5;
-const HINT_MESSAGE = "Parece que no es el código correcto... te daré una pista si fallas más veces.";
-let showingFavorites = false;
 
 let desbloqueados = new Set(JSON.parse(localStorage.getItem("desbloqueados") || "[]"));
 let logrosAlcanzados = new Set(JSON.parse(localStorage.getItem("logrosAlcanzados") || "[]"));
 let favoritos = new Set(JSON.parse(localStorage.getItem("favoritos") || "[]"));
 
-// --- Utilidades ---
+let showingFavorites = false;
+const HINT_MESSAGE = "Parece que no es el código correcto... sigue intentando.";
+
+/* ----------------------------------------------------
+   Playlist
+---------------------------------------------------- */
+const playlist = [
+  "assets/audio/playlist/music1.mp3",
+  "assets/audio/playlist/music2.mp3",
+  "assets/audio/playlist/music3.mp3",
+  "assets/audio/playlist/music4.mp3",
+  "assets/audio/playlist/music5.mp3",
+  "assets/audio/playlist/music6.mp3",
+  "assets/audio/playlist/music7.mp3",
+  "assets/audio/playlist/music8.mp3",
+  "assets/audio/playlist/music9.mp3",
+  "assets/audio/playlist/music10.mp3"
+];
+
+let currentTrack = parseInt(localStorage.getItem("currentTrack") || "0", 10);
+if (isNaN(currentTrack) || currentTrack < 0 || currentTrack >= playlist.length)
+  currentTrack = 0;
+
+let isShuffling = localStorage.getItem("isShuffling") === "true";
+
+let savedVolume = parseFloat(localStorage.getItem("bgMusicVolume"));
+if (isNaN(savedVolume)) savedVolume = 0.35; // ← tu valor solicitado
+
+let isMusicPlayingState = localStorage.getItem("isMusicPlaying") || "paused";
+
+/* ----------------------------------------------------
+   Funciones utilitarias
+---------------------------------------------------- */
 function normalizarTexto(texto) {
-  if (typeof texto !== 'string') return "";
-  return texto.toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .replace(/ñ/g, "n")
-              .replace(/\s+/g, "");
+  return (texto || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ñ/g, "n")
+    .replace(/\s+/g, "");
 }
 
 function guardarDesbloqueados() {
-  try {
-    localStorage.setItem("desbloqueados", JSON.stringify(Array.from(desbloqueados)));
-  } catch (e) { console.warn("guardarDesbloqueados:", e); }
+  localStorage.setItem("desbloqueados", JSON.stringify([...desbloqueados]));
 }
-
-function guardarLogrosAlcanzados() {
-  try {
-    localStorage.setItem("logrosAlcanzados", JSON.stringify(Array.from(logrosAlcanzados)));
-  } catch (e) { console.warn("guardarLogrosAlcanzados:", e); }
-}
-
 function guardarFavoritos() {
-  try {
-    localStorage.setItem("favoritos", JSON.stringify(Array.from(favoritos)));
-  } catch (e) { console.warn("guardarFavoritos:", e); }
+  localStorage.setItem("favoritos", JSON.stringify([...favoritos]));
+}
+function guardarLogrosAlcanzados() {
+  localStorage.setItem("logrosAlcanzados", JSON.stringify([...logrosAlcanzados]));
 }
 
-function showAchievementToast(message) {
-  if (!achievementToastContainer) return;
-  const toast = document.createElement('div');
-  toast.classList.add('achievement-toast');
-  toast.textContent = message;
+function showAchievementToast(text) {
+  const toast = document.createElement("div");
+  toast.className = "achievement-toast";
+  toast.textContent = text;
   achievementToastContainer.appendChild(toast);
-  toast.addEventListener('animationend', () => toast.remove());
+  toast.addEventListener("animationend", () => toast.remove());
 }
 
-// Actualiza la barra de progreso y verifica logros
+/* ----------------------------------------------------
+   PROGRESO
+---------------------------------------------------- */
 function actualizarProgreso() {
-  if (!progresoParrafo || !progressBarFill) return;
-  const totalCodigos = (typeof mensajes === 'object' && mensajes) ? Object.keys(mensajes).length : 0;
-  const codigosDesbloqueadosCount = desbloqueados.size;
-  const porcentaje = totalCodigos > 0 ? (codigosDesbloqueadosCount / totalCodigos) * 100 : 0;
+  if (!progresoParrafo) return;
+  const total = Object.keys(mensajes).length;
+  const desbloq = desbloqueados.size;
+  const porcentaje = total > 0 ? (desbloq / total) * 100 : 0;
 
-  progresoParrafo.textContent = `Has desbloqueado ${codigosDesbloqueadosCount} de ${totalCodigos} códigos.`;
+  progresoParrafo.textContent = `Has desbloqueado ${desbloq} de ${total} códigos.`;
   progressBarFill.style.width = `${porcentaje}%`;
-  progressBarFill.setAttribute('aria-valuenow', Math.round(porcentaje));
 
   if (Array.isArray(logros)) {
     logros.forEach(logro => {
-      if (codigosDesbloqueadosCount >= logro.codigo_requerido && !logrosAlcanzados.has(logro.id)) {
+      if (desbloq >= logro.codigo_requerido && !logrosAlcanzados.has(logro.id)) {
         logrosAlcanzados.add(logro.id);
-        showAchievementToast(`¡Logro: ${logro.mensaje}!`);
         guardarLogrosAlcanzados();
+        showAchievementToast(`🏆 Logro desbloqueado: ${logro.mensaje}`);
       }
     });
   }
 }
 
-// Favoritos
+/* ----------------------------------------------------
+   Favoritos
+---------------------------------------------------- */
 function toggleFavorite(codigo) {
-  if (!codigo) return;
   if (favoritos.has(codigo)) {
     favoritos.delete(codigo);
-    showAchievementToast(`"${codigo}" eliminado de favoritos.`);
+    showAchievementToast(`❤️ Quitado de favoritos: ${codigo}`);
   } else {
     favoritos.add(codigo);
-    showAchievementToast(`"${codigo}" añadido a favoritos.`);
+    showAchievementToast(`❤️ Añadido a favoritos: ${codigo}`);
   }
   guardarFavoritos();
   actualizarListaDesbloqueados();
 }
 
-// --- Render lista de desbloqueados ---
+/* ----------------------------------------------------
+   LISTA DE CÓDIGOS DESBLOQUEADOS
+---------------------------------------------------- */
 function actualizarListaDesbloqueados() {
-  if (!unlockedCodesList || typeof mensajes !== 'object') return;
   unlockedCodesList.innerHTML = "";
-  const searchTerm = normalizarTexto(searchUnlockedCodesInput ? searchUnlockedCodesInput.value : "");
-  const selectedCategory = categoryFilterSelect ? categoryFilterSelect.value : "";
 
-  const categoriasUnicas = new Set();
-  categoriasUnicas.add("");
+  const search = normalizarTexto(searchUnlockedCodesInput.value);
+  const filtro = categoryFilterSelect.value;
 
-  const codigosParaMostrar = showingFavorites ? Array.from(favoritos) : Array.from(desbloqueados);
+  const lista = showingFavorites ? [...favoritos] : [...desbloqueados];
 
-  codigosParaMostrar.sort().forEach(codigo => {
-    const mensaje = mensajes[codigo];
-    if (!mensaje) return;
-    categoriasUnicas.add(mensaje.categoria || "Sin Categoría");
+  const categorias = new Set([""]);
 
-    const normalizedCategoria = normalizarTexto(mensaje.categoria || "Sin Categoría");
-    const normalizedCodigo = normalizarTexto(codigo);
+  lista.sort().forEach(codigo => {
+    const data = mensajes[codigo];
+    if (!data) return;
 
-    const matchesSearch = searchTerm === "" || normalizedCodigo.includes(searchTerm);
-    const matchesCategory = selectedCategory === "" || normalizedCategoria === normalizarTexto(selectedCategory);
-    const isFavorite = favoritos.has(codigo);
+    categorias.add(data.categoria || "General");
 
-    if (matchesSearch && matchesCategory) {
-      const li = document.createElement("li");
-      li.innerHTML = `<span>${codigo}</span> <span class="category">${mensaje.categoria || "Genérico"}</span>`;
-      li.setAttribute("tabindex", "0");
-      li.setAttribute("aria-label", `Código desbloqueado: ${codigo}, categoría ${mensaje.categoria || "Genérico"}`);
+    const matchSearch = search === "" || normalizarTexto(codigo).includes(search);
+    const matchCat =
+      filtro === "" ||
+      normalizarTexto(data.categoria || "") === normalizarTexto(filtro);
 
-      const favoriteBtn = document.createElement("button");
-      favoriteBtn.classList.add("favorite-toggle-btn");
-      favoriteBtn.innerHTML = `<i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>`;
-      favoriteBtn.setAttribute("aria-label", isFavorite ? `Quitar ${codigo} de favoritos` : `Añadir ${codigo} a favoritos`);
-      if (isFavorite) favoriteBtn.classList.add('active');
+    if (!matchSearch || !matchCat) return;
 
-      favoriteBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        toggleFavorite(codigo);
-      });
-      li.appendChild(favoriteBtn);
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <span>${codigo}</span>
+      <span class="category">${data.categoria || "General"}</span>
+    `;
+    li.addEventListener("click", () => mostrarContenido(codigo));
 
-      li.addEventListener('click', () => mostrarContenido(codigo));
-      unlockedCodesList.appendChild(li);
-    }
+    const favBtn = document.createElement("button");
+    favBtn.className = "favorite-toggle-btn";
+    const isFav = favoritos.has(codigo);
+    favBtn.innerHTML = `<i class="${isFav ? "fas" : "far"} fa-heart"></i>`;
+    favBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      toggleFavorite(codigo);
+    });
+
+    li.appendChild(favBtn);
+    unlockedCodesList.appendChild(li);
   });
 
-  // Actualizar filtro de categoría (si existe)
-  if (categoryFilterSelect) {
-    categoryFilterSelect.innerHTML = '<option value="">Todas las categorías</option>';
-    Array.from(categoriasUnicas).sort().forEach(cat => {
-      if (cat !== "") {
-        const option = document.createElement("option");
-        option.value = cat;
-        option.textContent = cat;
-        if (cat === selectedCategory) option.selected = true;
-        categoryFilterSelect.appendChild(option);
-      }
+  categoryFilterSelect.innerHTML = `<option value="">Todas</option>`;
+  [...categorias]
+    .filter(c => c !== "")
+    .sort()
+    .forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+      opt.textContent = cat;
+      categoryFilterSelect.appendChild(opt);
     });
-  }
 }
 
-// --- Mostrar contenido para un código ---
+/* ----------------------------------------------------
+   MOSTRAR CONTENIDO POR CÓDIGO
+---------------------------------------------------- */
 function mostrarContenido(codigo) {
-  const mensaje = (typeof mensajes === 'object' && mensajes) ? mensajes[codigo] : null;
-  if (!mensaje) return;
+  const data = mensajes[codigo];
+  if (!data) return;
 
-  if (!contenidoDiv) return;
-  contenidoDiv.innerHTML = "";
   contenidoDiv.hidden = false;
-  contenidoDiv.classList.remove('fade-in');
+  contenidoDiv.classList.remove("fade-in");
   void contenidoDiv.offsetWidth;
-  contenidoDiv.classList.add('fade-in');
+  contenidoDiv.classList.add("fade-in");
 
-  let contentHTML = "";
+  let html = "";
 
-  // VIDEO
-  if (mensaje.videoEmbed) {
-    contentHTML += `
+  /* VIDEO EMBED */
+  if (data.videoEmbed) {
+    html += `
       <h2>Video Especial</h2>
-      <p>${mensaje.texto || '¡Disfruta de este momento!'}</p>
+      <p>${data.texto || ""}</p>
       <div class="video-wrapper">
-        <iframe
-          src="${mensaje.videoEmbed}"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          title="Video especial para ti">
-        </iframe>
+        <iframe src="${data.videoEmbed}" frameborder="0" allowfullscreen></iframe>
       </div>
+      <button id="resumeMusicBtn" class="button small-button">
+        <i class="fas fa-music"></i> Reanudar música
+      </button>
     `;
 
-    if (bgMusic && !bgMusic.paused) {
-      try { bgMusic.pause(); } catch (e) { console.warn("bgMusic.pause:", e); }
-      contentHTML += `<button id="resumeMusicBtn" class="button small-button"><i class="fas fa-music"></i> Reanudar Música de Fondo</button>`;
-      setTimeout(() => {
-        const resumeBtn = document.getElementById('resumeMusicBtn');
-        if (resumeBtn) {
-          resumeBtn.addEventListener('click', () => {
-            if (bgMusic) bgMusic.play().catch(e => console.error("Error al reanudar la música:", e));
-            if (musicToggleIcon) {
-              musicToggleIcon.classList.add('fa-volume-up');
-              musicToggleIcon.classList.remove('fa-volume-mute');
-            }
-            if (musicToggleBtn) musicToggleBtn.classList.add('playing');
-            resumeBtn.remove();
-          });
-        }
-      }, 100);
+    if (!bgMusic.paused) {
+      bgMusic.pause();
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      localStorage.setItem("isMusicPlaying", "paused");
     }
 
-  // IMAGEN (modal)
-  } else if (mensaje.imagen) {
-    if (modalImg) modalImg.src = mensaje.imagen;
-    if (modalImg) modalImg.alt = mensaje.texto || "Imagen desbloqueada";
-    if (modalCaption) modalCaption.textContent = mensaje.texto || "";
-    if (imageModal) imageModal.style.display = "flex";
-    if (modalImg) {
-      modalImg.classList.remove('fade-in-modal');
-      void modalImg.offsetWidth;
-      modalImg.classList.add('fade-in-modal');
-    }
+    contenidoDiv.innerHTML = html;
 
-    if (bgMusic && !bgMusic.paused) {
-      try { bgMusic.pause(); } catch (e) { console.warn(e); }
-      if (musicToggleIcon) {
-        musicToggleIcon.classList.remove('fa-volume-up');
-        musicToggleIcon.classList.add('fa-volume-mute');
-      }
-      if (musicToggleBtn) musicToggleBtn.classList.remove('playing');
-      localStorage.setItem('isMusicPlaying', 'paused');
+    document.getElementById("resumeMusicBtn").onclick = () => {
+      bgMusic.play();
+      playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+      localStorage.setItem("isMusicPlaying", "playing");
+    };
+
+    return;
+  }
+
+  /* IMAGEN (modal) */
+  if (data.imagen) {
+    modalImg.src = data.imagen;
+    modalCaption.textContent = data.texto || "";
+    imageModal.style.display = "flex";
+
+    if (!bgMusic.paused) {
+      bgMusic.pause();
+      playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+      localStorage.setItem("isMusicPlaying", "paused");
     }
     return;
-
-  // AUDIO
-  } else if (mensaje.audio) {
-    if (codeAudio) {
-      if (codeAudio.src !== mensaje.audio) codeAudio.src = mensaje.audio;
-      fadeInAudio(codeAudio, 0.1, 2000);
-      if (bgMusic && !bgMusic.paused) {
-        fadeOutAudio(bgMusic, 0.05, 500);
-        try { bgMusic.setAttribute('data-was-playing', 'true'); } catch (e) {}
-      }
-    }
-    contentHTML += `<h2>Audio Secreto Desbloqueado</h2><p>${mensaje.texto || 'Haz clic para escuchar el mensaje de audio.'}</p><button id="playCodeAudioBtn" class="button"><i class="fas fa-play"></i> Reproducir Audio</button>`;
-
-  // LINK
-  } else if (mensaje.link) {
-    contentHTML += `<h2>Enlace Especial</h2><p>${mensaje.texto || 'Haz clic para ir al enlace.'}</p><a href="${mensaje.link}" target="_blank" class="button" rel="noopener noreferrer">Ir al Enlace <i class="fas fa-external-link-alt"></i></a>`;
-
-  // DESCARGA
-  } else if (mensaje.descarga) {
-    contentHTML += `<h2>Archivo Secreto</h2><p>${mensaje.texto || 'Haz clic para descargar tu regalo.'}</p><a href="${mensaje.descarga.url}" download="${mensaje.descarga.nombre}" class="button">Descargar ${mensaje.descarga.nombre} <i class="fas fa-download"></i></a>`;
-
-  // TEXTO
-  } else if (mensaje.texto) {
-    contentHTML += `<h2>Mensaje Desbloqueado</h2><p>${mensaje.texto}</p>`;
-
-  } else {
-    contentHTML += `<p>Contenido especial, pero no hay texto, imagen, video o audio asociado directamente.</p>`;
   }
 
-  contenidoDiv.innerHTML = contentHTML;
+  /* AUDIO */
+  if (data.audio) {
+    html += `
+      <h2>Audio Secreto</h2>
+      <p>${data.texto || ""}</p>
+      <button id="playCodeAudioBtn" class="button"><i class="fas fa-play"></i> Reproducir</button>
+    `;
 
-  // Bind botones de audio si existen
-  if (mensaje.audio && codeAudio) {
-    const playCodeAudioBtn = document.getElementById("playCodeAudioBtn");
-    if (playCodeAudioBtn) {
-      playCodeAudioBtn.addEventListener('click', () => {
-        codeAudio.play().catch(e => console.error("Error al reproducir audio del código:", e));
-        playCodeAudioBtn.hidden = true;
-      });
-    }
+    contenidoDiv.innerHTML = html;
+
+    codeAudio.src = data.audio;
+    document.getElementById("playCodeAudioBtn").onclick = () => {
+      codeAudio.play();
+    };
+    return;
   }
+
+  /* LINK */
+  if (data.link) {
+    html += `
+      <h2>Enlace Especial</h2>
+      <p>${data.texto || ""}</p>
+      <a href="${data.link}" target="_blank" class="button">Abrir <i class="fas fa-external-link-alt"></i></a>
+    `;
+    contenidoDiv.innerHTML = html;
+    return;
+  }
+
+  /* DESCARGA */
+  if (data.descarga) {
+    html += `
+      <h2>Archivo Especial</h2>
+      <p>${data.texto || ""}</p>
+      <a href="${data.descarga.url}" download="${data.descarga.nombre}" class="button">
+        Descargar ${data.descarga.nombre} <i class="fas fa-download"></i>
+      </a>
+    `;
+    contenidoDiv.innerHTML = html;
+    return;
+  }
+
+  /* TEXTO */
+  if (data.texto) {
+    html += `<h2>Mensaje Desbloqueado</h2><p>${data.texto}</p>`;
+  }
+
+  contenidoDiv.innerHTML = html;
 }
 
-// --- Cerrar modal (única versión) ---
+/* ----------------------------------------------------
+   CERRAR MODAL
+---------------------------------------------------- */
 function cerrarModal() {
-  if (imageModal) imageModal.style.display = "none";
+  imageModal.style.display = "none";
 
-  if (bgMusic && bgMusic.paused && localStorage.getItem('isMusicPlaying') === 'playing') {
-    bgMusic.play().catch(e => console.error("Error al reanudar la música desde el modal:", e));
-    if (musicToggleIcon) {
-      musicToggleIcon.classList.add('fa-volume-up');
-      musicToggleIcon.classList.remove('fa-volume-mute');
-    }
-    if (musicToggleBtn) musicToggleBtn.classList.add('playing');
+  if (localStorage.getItem("isMusicPlaying") === "playing") {
+    bgMusic.play();
+    playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
   }
 }
 
-// Cerrar modal al hacer clic fuera de la imagen
-if (imageModal) {
-  imageModal.addEventListener('click', (event) => {
-    if (event.target === imageModal) cerrarModal();
-  });
+imageModal.addEventListener("click", e => {
+  if (e.target === imageModal) cerrarModal();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && imageModal.style.display === "flex") cerrarModal();
+});
+/******************************************************
+ *  SCRIPT.JS — PARTE 2 / 3
+ ******************************************************/
+
+/* ----------------------------------------------------
+   FUNCIONES DE AUDIO
+---------------------------------------------------- */
+
+/* Nombre amigable de la pista */
+function friendlyTrackName(path) {
+  try {
+    const file = path.split("/").pop();
+    return file.replace(/\.[^.]+$/, "").replace(/[_-]/g, " ");
+  } catch {
+    return path;
+  }
 }
 
-// Cerrar modal con Escape
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && imageModal && imageModal.style.display === 'flex') {
-    cerrarModal();
+/* Cargar pista */
+function loadTrack(index, autoplay = true) {
+  currentTrack = (index + playlist.length) % playlist.length;
+  localStorage.setItem("currentTrack", currentTrack);
+
+  bgMusic.src = playlist[currentTrack];
+  bgMusic.load();
+
+  if (currentTrackName) {
+    currentTrackName.textContent = friendlyTrackName(playlist[currentTrack]);
   }
+
+  bgMusic.volume = savedVolume;
+
+  if (autoplay) {
+    bgMusic.play().then(() => {
+      playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+      localStorage.setItem("isMusicPlaying", "playing");
+      isMusicPlayingState = "playing";
+    }).catch(() => {
+      playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`;
+      localStorage.setItem("isMusicPlaying", "paused");
+      isMusicPlayingState = "paused";
+    });
+  } else {
+    playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`;
+  }
+}
+
+/* Play/Pause */
+function playPause() {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+    localStorage.setItem("isMusicPlaying", "playing");
+  } else {
+    bgMusic.pause();
+    playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`;
+    localStorage.setItem("isMusicPlaying", "paused");
+  }
+}
+
+/* Siguiente pista */
+function nextTrack() {
+  if (isShuffling) {
+    currentTrack = Math.floor(Math.random() * playlist.length);
+  } else {
+    currentTrack = (currentTrack + 1) % playlist.length;
+  }
+  loadTrack(currentTrack, true);
+}
+
+/* Pista anterior */
+function prevTrack() {
+  if (isShuffling) {
+    currentTrack = Math.floor(Math.random() * playlist.length);
+  } else {
+    currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+  }
+  loadTrack(currentTrack, true);
+}
+
+/* Cuando termina la música */
+bgMusic.addEventListener("ended", nextTrack);
+
+/* Botones */
+playPauseBtn.addEventListener("click", playPause);
+nextTrackBtn.addEventListener("click", nextTrack);
+prevTrackBtn.addEventListener("click", prevTrack);
+
+/* Mute */
+muteBtn.addEventListener("click", () => {
+  bgMusic.muted = !bgMusic.muted;
+  muteBtn.innerHTML = bgMusic.muted
+    ? `<i class="fas fa-volume-mute"></i>`
+    : `<i class="fas fa-volume-up"></i>`;
+  localStorage.setItem("bgMusicMuted", bgMusic.muted);
 });
 
-// --- Fade audio helpers ---
-function fadeInAudio(audioElement, increment, duration) {
-  if (!audioElement) return;
-  try {
-    audioElement.volume = 0;
-    audioElement.play().catch(e => console.error("Error al iniciar fade-in audio:", e));
-  } catch (e) { console.warn(e); }
+/* Shuffle */
+shuffleBtn.addEventListener("click", () => {
+  isShuffling = !isShuffling;
+  shuffleBtn.style.color = isShuffling ? "var(--highlight-pink)" : "";
+  localStorage.setItem("isShuffling", isShuffling);
+});
 
-  const steps = Math.max(1, Math.round(duration / (increment * 1000)));
-  const stepIncrement = 1 / steps;
+/* Volumen */
+audioVolume.value = savedVolume;
+audioVolume.addEventListener("input", () => {
+  savedVolume = parseFloat(audioVolume.value);
+  bgMusic.volume = savedVolume;
+  localStorage.setItem("bgMusicVolume", savedVolume);
+});
 
-  const fadeInInterval = setInterval(() => {
-    if (audioElement.volume < 1 - stepIncrement) {
-      audioElement.volume = Math.min(1, audioElement.volume + stepIncrement);
-    } else {
-      audioElement.volume = 1;
-      clearInterval(fadeInInterval);
-    }
-  }, Math.max(10, Math.round(increment * 1000)));
+/* ----------------------------------------------------
+   PANEL LATERAL (SLIDE-IN)
+---------------------------------------------------- */
+audioSettingsBtn.addEventListener("click", () => {
+  audioPanel.classList.add("show");
+  audioPanel.setAttribute("aria-hidden", "false");
+
+  // Accesibilidad
+  setTimeout(() => playPauseBtn.focus(), 150);
+
+  cerrarMenu();
+});
+
+closeAudioPanel.addEventListener("click", () => {
+  audioPanel.classList.remove("show");
+  audioPanel.setAttribute("aria-hidden", "true");
+});
+
+/* ----------------------------------------------------
+   AUTOPLAY ON FIRST INTERACTION
+---------------------------------------------------- */
+let interactionStarted = false;
+function startOnInteraction() {
+  if (interactionStarted) return;
+  interactionStarted = true;
+
+  const wasPlaying = localStorage.getItem("isMusicPlaying") === "playing";
+
+  /* Cargar pista actual */
+  loadTrack(currentTrack, wasPlaying);
+
+  /* Recuperar estado */
+  bgMusic.muted = localStorage.getItem("bgMusicMuted") === "true";
+  muteBtn.innerHTML = bgMusic.muted
+    ? `<i class="fas fa-volume-mute"></i>`
+    : `<i class="fas fa-volume-up"></i>`;
+
+  document.removeEventListener("click", startOnInteraction);
+  document.removeEventListener("keydown", startOnInteraction);
 }
+document.addEventListener("click", startOnInteraction, { once: true, passive: true });
+document.addEventListener("keydown", startOnInteraction, { once: true, passive: true });
 
-function fadeOutAudio(audioElement, decrement, duration) {
-  if (!audioElement) return;
-  const steps = Math.max(1, Math.round(duration / (decrement * 1000)));
-  const stepDecrement = 1 / steps;
-
-  const fadeOutInterval = setInterval(() => {
-    if (audioElement.volume > stepDecrement) {
-      audioElement.volume = Math.max(0, audioElement.volume - stepDecrement);
-    } else {
-      audioElement.volume = 0;
-      try { audioElement.pause(); } catch (e) {}
-      clearInterval(fadeOutInterval);
-    }
-  }, Math.max(10, Math.round(decrement * 1000)));
-}
-
-// --- Procesar código (entrada de usuario) ---
+/* ----------------------------------------------------
+   PROCESAR CÓDIGO INGRESADO
+---------------------------------------------------- */
 function procesarCodigo() {
-  const codigoIngresado = codeInput ? (codeInput.value || "") : "";
+  const codigoIngresado = codeInput.value || "";
   const codigo = normalizarTexto(codigoIngresado);
-  const mensaje = (typeof mensajes === 'object' && mensajes) ? mensajes[codigo] : null;
-
-  if (!contenidoDiv || !codeInput) return;
+  const data = mensajes[codigo];
 
   contenidoDiv.hidden = true;
   codeInput.classList.remove("success", "error");
 
-  if (mensaje) {
-    try { if (correctSound) correctSound.play(); } catch (e) { console.warn("correctSound:", e); }
+  if (data) {
+    /* CORRECTO */
+    correctSound.play().catch(() => {});
     codeInput.classList.add("success");
+
     mostrarContenido(codigo);
 
     if (!desbloqueados.has(codigo)) {
       desbloqueados.add(codigo);
       guardarDesbloqueados();
       actualizarProgreso();
-      showAchievementToast(`¡Código desbloqueado: ${codigo}! 🎉`);
+      showAchievementToast(`✨ Código desbloqueado: ${codigo}`);
     }
 
     actualizarListaDesbloqueados();
+
     failedAttempts = 0;
     localStorage.setItem("failedAttempts", "0");
 
   } else {
-    try { if (incorrectSound) incorrectSound.play(); } catch (e) { console.warn("incorrectSound:", e); }
+    /* INCORRECTO */
+    incorrectSound.play().catch(() => {});
     codeInput.classList.add("error");
+
     failedAttempts++;
-    localStorage.setItem("failedAttempts", failedAttempts.toString());
+    localStorage.setItem("failedAttempts", failedAttempts);
 
     if (failedAttempts >= MAX_FAILED_ATTEMPTS) {
-      let codigosNoDesbloqueados = (typeof mensajes === 'object') ? Object.keys(mensajes).filter(c =>
-        !desbloqueados.has(c) && mensajes[c].pista
-      ) : [];
+      /* DAR PISTA */
+      const candidatos = Object.keys(mensajes).filter(
+        c => !desbloqueados.has(c) && mensajes[c].pista
+      );
 
-      let pistaMostrar = HINT_MESSAGE;
-      let ultimoCodigoPista = localStorage.getItem("ultimoCodigoPista");
+      let pista = HINT_MESSAGE;
 
-      if (codigosNoDesbloqueados.length > 0) {
-        if (codigosNoDesbloqueados.length > 1 && ultimoCodigoPista) {
-          codigosNoDesbloqueados = codigosNoDesbloqueados.filter(c => c !== ultimoCodigoPista);
-        }
-        const codigoAleatorio = codigosNoDesbloqueados[Math.floor(Math.random() * codigosNoDesbloqueados.length)];
-        pistaMostrar = mensajes[codigoAleatorio].pista;
-        localStorage.setItem("ultimoCodigoPista", codigoAleatorio);
+      if (candidatos.length > 0) {
+        const elegido = candidatos[Math.floor(Math.random() * candidatos.length)];
+        pista = mensajes[elegido].pista;
       }
 
       contenidoDiv.innerHTML = `
-        <h2>💡 Pista para ti:</h2>
-        <p>${pistaMostrar}</p>
+        <h2>💡 Pista:</h2>
+        <p>${pista}</p>
       `;
       contenidoDiv.hidden = false;
-
       failedAttempts = 0;
       localStorage.setItem("failedAttempts", "0");
     } else {
       contenidoDiv.innerHTML = `
         <h2>Código Incorrecto</h2>
         <p>Intentos fallidos: ${failedAttempts} de ${MAX_FAILED_ATTEMPTS}</p>
-        <p>Sigue intentando, quizás una pista aparezca pronto...</p>
+        <p>Sigue intentando…</p>
       `;
       contenidoDiv.hidden = false;
     }
@@ -425,341 +565,436 @@ function procesarCodigo() {
   codeInput.value = "";
 }
 
-// --- Listeners: entrada de código ---
-if (submitCodeBtn) submitCodeBtn.addEventListener("click", procesarCodigo);
-if (codeInput) {
-  codeInput.addEventListener("keypress", (e) => {
-    if (e.key === "Enter") procesarCodigo();
-  });
-}
+submitCodeBtn.addEventListener("click", procesarCodigo);
+codeInput.addEventListener("keypress", e => {
+  if (e.key === "Enter") procesarCodigo();
+});
 
-// --- Música de fondo toggle ---
-let isMusicPlaying = localStorage.getItem('isMusicPlaying');
-if (bgMusic) {
-  if (isMusicPlaying === 'playing') {
-    bgMusic.play().catch(e => console.error("Error al iniciar música de fondo:", e));
-    if (musicToggleIcon) {
-      musicToggleIcon.classList.add('fa-volume-up');
-      musicToggleIcon.classList.remove('fa-volume-mute');
-    }
-    if (musicToggleBtn) musicToggleBtn.classList.add('playing');
-  } else {
-    if (musicToggleIcon) {
-      musicToggleIcon.classList.remove('fa-volume-up');
-      musicToggleIcon.classList.add('fa-volume-mute');
-    }
-    if (musicToggleBtn) musicToggleBtn.classList.remove('playing');
-  }
-
-  if (musicToggleBtn) {
-    musicToggleBtn.addEventListener("click", () => {
-      if (bgMusic.paused) {
-        bgMusic.play().catch(e => console.error("Error al reanudar música:", e));
-        if (musicToggleIcon) {
-          musicToggleIcon.classList.add('fa-volume-up');
-          musicToggleIcon.classList.remove('fa-volume-mute');
-        }
-        musicToggleBtn.classList.add('playing');
-        localStorage.setItem('isMusicPlaying', 'playing');
-      } else {
-        bgMusic.pause();
-        if (musicToggleIcon) {
-          musicToggleIcon.classList.remove('fa-volume-up');
-          musicToggleIcon.classList.add('fa-volume-mute');
-        }
-        musicToggleBtn.classList.remove('playing');
-        localStorage.setItem('isMusicPlaying', 'paused');
-      }
-    });
-  }
-}
-
-// Cuando termina el audio del código, reanudar fondo si corresponde
-if (codeAudio) {
-  codeAudio.addEventListener('ended', () => {
-    if (bgMusic && bgMusic.getAttribute && bgMusic.getAttribute('data-was-playing') === 'true') {
-      fadeInAudio(bgMusic, 0.05, 500);
-      try { bgMusic.removeAttribute('data-was-playing'); } catch (e) {}
-    }
-  });
-}
-
-// Toggle panel desbloqueados
-if (toggleUnlockedCodesBtn) toggleUnlockedCodesBtn.addEventListener("click", toggleUnlockedCodes);
-function toggleUnlockedCodes() {
-  if (!unlockedCodesPanel || !toggleUnlockedCodesBtn) return;
-  const isHidden = unlockedCodesPanel.hidden;
-  unlockedCodesPanel.hidden = !isHidden;
-  toggleUnlockedCodesBtn.setAttribute("aria-expanded", (!isHidden).toString());
-  toggleUnlockedCodesBtn.textContent = isHidden ? "Ocultar Códigos Desbloqueados" : "Mostrar Códigos Desbloqueados";
-
-  showingFavorites = false;
-  if (filterFavoritesBtn) {
-    filterFavoritesBtn.classList.remove('active');
-    filterFavoritesBtn.setAttribute('aria-pressed', 'false');
-  }
-  actualizarListaDesbloqueados();
-}
-
-// Mostrar favoritos desde menú
-if (showFavoritesBtn) {
-  showFavoritesBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    if (toggleUnlockedCodesBtn && unlockedCodesPanel && unlockedCodesPanel.hidden) toggleUnlockedCodes();
-    showingFavorites = true;
-    if (filterFavoritesBtn) {
-      filterFavoritesBtn.classList.add('active');
-      filterFavoritesBtn.setAttribute('aria-pressed', 'true');
-    }
-    if (searchUnlockedCodesInput) searchUnlockedCodesInput.value = '';
-    if (categoryFilterSelect) categoryFilterSelect.value = '';
-    actualizarListaDesbloqueados();
-    cerrarMenu();
-  });
-}
-
-// Filtro favoritos dentro del panel
-if (filterFavoritesBtn) {
-  filterFavoritesBtn.addEventListener('click', () => {
-    showingFavorites = !showingFavorites;
-    filterFavoritesBtn.classList.toggle('active', showingFavorites);
-    filterFavoritesBtn.setAttribute('aria-pressed', showingFavorites.toString());
-    actualizarListaDesbloqueados();
-  });
-}
-
-// Búsqueda y filtro categoría
-if (searchUnlockedCodesInput) searchUnlockedCodesInput.addEventListener("input", actualizarListaDesbloqueados);
-if (categoryFilterSelect) categoryFilterSelect.addEventListener("change", actualizarListaDesbloqueados);
-
-// Menú desplegable
-if (menuButton) {
-  menuButton.addEventListener('click', () => {
-    const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
-    menuButton.setAttribute('aria-expanded', (!isExpanded).toString());
-    if (dropdownMenu) {
-      dropdownMenu.classList.toggle('show');
-      dropdownMenu.setAttribute('aria-hidden', isExpanded ? 'true' : 'false');
-      if (!isExpanded) dropdownMenu.querySelector('a, button')?.focus();
-    }
-  });
-}
-
-// --- Exportar e Importar progreso ---
-const exportProgressBtn = document.getElementById('exportProgressBtn');
-const importProgressBtn = document.getElementById('importProgressBtn');
-const importProgressInput = document.getElementById('importProgressInput');
-
-// Función para exportar progreso
+/* ----------------------------------------------------
+   EXPORTAR / IMPORTAR PROGRESO
+---------------------------------------------------- */
 function exportarProgreso() {
   const datos = {
-    desbloqueados: Array.from(desbloqueados),
-    favoritos: Array.from(favoritos),
-    logrosAlcanzados: Array.from(logrosAlcanzados),
+    desbloqueados: [...desbloqueados],
+    favoritos: [...favoritos],
+    logrosAlcanzados: [...logrosAlcanzados],
     fecha: new Date().toLocaleString()
   };
 
   const blob = new Blob([JSON.stringify(datos, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
+
   const a = document.createElement("a");
   a.href = url;
-  a.download = `progreso_${new Date().toISOString().split("T")[0]}.json`;
+  a.download = `progreso_${new Date().toISOString().slice(0, 10)}.json`;
   a.click();
-  URL.revokeObjectURL(url);
 
-  showAchievementToast("Progreso exportado correctamente");
+  URL.revokeObjectURL(url);
+  showAchievementToast("📤 Progreso exportado");
 }
 
-// Función para importar progreso desde un archivo JSON
-function importarProgreso(archivo) {
+function importarProgreso(file) {
   const reader = new FileReader();
+
   reader.onload = e => {
     try {
-      const datos = JSON.parse(e.target.result);
-      if (!datos || typeof datos !== "object") throw new Error("Archivo no válido");
+      const data = JSON.parse(e.target.result);
 
-      desbloqueados = new Set(datos.desbloqueados || []);
-      favoritos = new Set(datos.favoritos || []);
-      logrosAlcanzados = new Set(datos.logrosAlcanzados || []);
+      desbloqueados = new Set(data.desbloqueados || []);
+      favoritos = new Set(data.favoritos || []);
+      logrosAlcanzados = new Set(data.logrosAlcanzados || []);
 
       guardarDesbloqueados();
       guardarFavoritos();
       guardarLogrosAlcanzados();
+
       actualizarProgreso();
       actualizarListaDesbloqueados();
 
-      showAchievementToast("Progreso importado correctamente");
+      showAchievementToast("📥 Progreso importado");
+
     } catch (err) {
-      alert("El archivo no es válido o está dañado.");
-      console.error("Error al importar progreso:", err);
+      alert("Archivo inválido.");
+      console.error(err);
     }
   };
-  reader.readAsText(archivo);
+
+  reader.readAsText(file);
 }
 
-// --- Resetear progreso ---
-const resetProgressBtn = document.getElementById('resetProgressBtn');
+/* Botones de export / import */
+document.getElementById("exportProgressBtn").addEventListener("click", () => {
+  exportarProgreso();
+  cerrarMenu();
+});
 
+const importInput = document.getElementById("importProgressInput");
+document.getElementById("importProgressBtn").addEventListener("click", () => {
+  importInput.click();
+  cerrarMenu();
+});
+
+importInput.addEventListener("change", e => {
+  if (e.target.files[0]) importarProgreso(e.target.files[0]);
+  importInput.value = "";
+});
+/******************************************************
+ *  SCRIPT.JS — PARTE 3 / 3
+ ******************************************************/
+
+/* ----------------------------------------------------
+   RESETEAR PROGRESO
+---------------------------------------------------- */
 function resetearProgreso() {
-  if (!confirm("¿Seguro que quieres borrar todo tu progreso?\nSe eliminarán:\n✔ Códigos desbloqueados\n✔ Favoritos\n✔ Logros\n✔ Pistas usadas\n✔ Intentos fallidos\n✔ Tema oscuro\n\nEsto NO se puede deshacer.")) {
-    return;
+  const confirmar = confirm(
+    "¿Seguro que quieres borrar TODO tu progreso?\n\n" +
+    "Se eliminarán:\n" +
+    "✓ Códigos desbloqueados\n" +
+    "✓ Favoritos\n" +
+    "✓ Logros\n" +
+    "✓ Tema oscuro\n" +
+    "✓ Música (volumen, pista, mute, shuffle)\n" +
+    "✓ Intentos fallidos\n\n" +
+    "Esta acción NO se puede deshacer."
+  );
+
+  if (!confirmar) return;
+
+  localStorage.clear();
+
+  desbloqueados = new Set();
+  favoritos = new Set();
+  logrosAlcanzados = new Set();
+  failedAttempts = 0;
+
+  document.body.classList.remove("dark-mode");
+  if (darkModeToggle) {
+    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Oscuro';
   }
 
-  try {
-    // Borrar almacenamiento local
-    localStorage.removeItem("desbloqueados");
-    localStorage.removeItem("favoritos");
-    localStorage.removeItem("logrosAlcanzados");
-    localStorage.removeItem("failedAttempts");
-    localStorage.removeItem("ultimoCodigoPista");
-    localStorage.removeItem("isMusicPlaying");
-    localStorage.removeItem("theme");
-
-    // Borrar variables en memoria
-    desbloqueados = new Set();
-    logrosAlcanzados = new Set();
-    favoritos = new Set();
-    failedAttempts = 0;
-
-    // Resetear UI
-    document.body.classList.remove("dark-mode");
-    if (darkModeToggle) {
-      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo oscuro';
-    }
-
-    if (bgMusic) {
-      bgMusic.pause();
-      bgMusic.currentTime = 0;
-    }
-    if (musicToggleBtn) musicToggleBtn.classList.remove('playing');
-    if (musicToggleIcon) {
-      musicToggleIcon.classList.remove('fa-volume-up');
-      musicToggleIcon.classList.add('fa-volume-mute');
-    }
-
-    if (contenidoDiv) contenidoDiv.hidden = true;
-
-    actualizarProgreso();
-    actualizarListaDesbloqueados();
-
-    showAchievementToast("Todo el progreso ha sido restablecido.");
-  } catch (e) {
-    console.error("Error al resetear progreso:", e);
-    alert("Hubo un problema al restablecer el progreso.");
+  if (bgMusic) {
+    bgMusic.pause();
+    bgMusic.src = "";
   }
 
+  contenidoDiv.hidden = true;
+
+  actualizarProgreso();
+  actualizarListaDesbloqueados();
+
+  showAchievementToast("🔄 Progreso restablecido");
   cerrarMenu();
 }
 
-if (resetProgressBtn) {
-  resetProgressBtn.addEventListener("click", resetearProgreso);
+document.getElementById("resetProgressBtn").addEventListener("click", resetearProgreso);
+
+
+/* ----------------------------------------------------
+   MOSTRAR / OCULTAR PANEL DE CÓDIGOS DESBLOQUEADOS
+---------------------------------------------------- */
+
+toggleUnlockedCodesBtn.addEventListener("click", toggleUnlockedCodes);
+
+function toggleUnlockedCodes() {
+  const isHidden = unlockedCodesPanel.hidden;
+
+  unlockedCodesPanel.hidden = !isHidden;
+  toggleUnlockedCodesBtn.textContent = isHidden
+    ? "Ocultar Códigos Desbloqueados"
+    : "Mostrar Códigos Desbloqueados";
+
+  toggleUnlockedCodesBtn.setAttribute("aria-expanded", String(isHidden));
+
+  showingFavorites = false;
+  filterFavoritesBtn.classList.remove("active");
+  filterFavoritesBtn.setAttribute("aria-pressed", "false");
+
+  actualizarListaDesbloqueados();
 }
 
-// Listeners
-if (exportProgressBtn) {
-  exportProgressBtn.addEventListener('click', () => {
-    exportarProgreso();
-    cerrarMenu(); // Cierra el menú después de exportar
-  });
-}
+/* Ver favoritos desde el menú */
+showFavoritesBtn.addEventListener("click", () => {
+  if (unlockedCodesPanel.hidden) toggleUnlockedCodes();
+  showingFavorites = true;
+  filterFavoritesBtn.classList.add("active");
+  filterFavoritesBtn.setAttribute("aria-pressed", "true");
 
-if (importProgressBtn && importProgressInput) {
-  importProgressBtn.addEventListener('click', () => {
-    importProgressInput.click();
-    cerrarMenu(); // Cierra el menú después de abrir selector
-  });
+  searchUnlockedCodesInput.value = "";
+  categoryFilterSelect.value = "";
 
-  importProgressInput.addEventListener('change', (e) => {
-    const archivo = e.target.files[0];
-    if (archivo) importarProgreso(archivo);
-    e.target.value = ""; // limpia el input
-  });
-}
+  actualizarListaDesbloqueados();
+  cerrarMenu();
+});
 
-// Cerrar menú al hacer click fuera
-document.addEventListener('click', (event) => {
-  if (!menuButton || !dropdownMenu) return;
-  if (!menuButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-    if (dropdownMenu.classList.contains('show')) {
-      dropdownMenu.classList.remove('show');
-      menuButton.setAttribute('aria-expanded', 'false');
-      dropdownMenu.setAttribute('aria-hidden', 'true');
+/* Favoritos dentro del panel */
+filterFavoritesBtn.addEventListener("click", () => {
+  showingFavorites = !showingFavorites;
+
+  filterFavoritesBtn.classList.toggle("active", showingFavorites);
+  filterFavoritesBtn.setAttribute("aria-pressed", showingFavorites);
+
+  actualizarListaDesbloqueados();
+});
+
+/* Filtros del panel */
+searchUnlockedCodesInput.addEventListener("input", actualizarListaDesbloqueados);
+categoryFilterSelect.addEventListener("change", actualizarListaDesbloqueados);
+
+
+/* ----------------------------------------------------
+   MENÚ DESPLEGABLE DE NAVEGACIÓN
+---------------------------------------------------- */
+
+menuButton.addEventListener("click", () => {
+  const isExpanded = menuButton.getAttribute("aria-expanded") === "true";
+
+  menuButton.setAttribute("aria-expanded", String(!isExpanded));
+  dropdownMenu.classList.toggle("show");
+  dropdownMenu.setAttribute("aria-hidden", isExpanded ? "true" : "false");
+
+  if (!isExpanded) dropdownMenu.querySelector("a, button")?.focus();
+});
+
+/* Cerrar menú al hacer click fuera */
+document.addEventListener("click", e => {
+  if (!menuButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+    if (dropdownMenu.classList.contains("show")) cerrarMenu();
+  }
+});
+
+/* Accesibilidad por teclado */
+dropdownMenu.addEventListener("keydown", e => {
+  const focusables = dropdownMenu.querySelectorAll("a, button");
+  if (!focusables.length) return;
+
+  const first = focusables[0];
+  const last = focusables[focusables.length - 1];
+
+  if (e.key === "Escape") {
+    cerrarMenu();
+    menuButton.focus();
+  } else if (e.key === "Tab") {
+    if (e.shiftKey && document.activeElement === first) {
+      last.focus();
+      e.preventDefault();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      first.focus();
+      e.preventDefault();
     }
   }
 });
 
-// Accesibilidad teclado en dropdown
-if (dropdownMenu) {
-  dropdownMenu.addEventListener('keydown', function(event) {
-    const focusableElements = this.querySelectorAll('a, button');
-    if (!focusableElements.length) return;
-    const firstFocusableElement = focusableElements[0];
-    const lastFocusableElement = focusableElements[focusableElements.length - 1];
-
-    if (event.key === 'Escape') {
-      dropdownMenu.classList.remove('show');
-      menuButton.setAttribute('aria-expanded', 'false');
-      dropdownMenu.setAttribute('aria-hidden', 'true');
-      if (menuButton) menuButton.focus();
-      event.preventDefault();
-    } else if (event.key === 'Tab') {
-      if (event.shiftKey) {
-        if (document.activeElement === firstFocusableElement) {
-          lastFocusableElement.focus();
-          event.preventDefault();
-        }
-      } else {
-        if (document.activeElement === lastFocusableElement) {
-          firstFocusableElement.focus();
-          event.preventDefault();
-        }
-      }
-    }
-  });
-}
-
-// Cerrar menú por función
+/* Función cerrar menú */
 function cerrarMenu() {
-  if (dropdownMenu) dropdownMenu.classList.remove('show');
-  if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
-  if (dropdownMenu) dropdownMenu.setAttribute('aria-hidden', 'true');
+  dropdownMenu.classList.remove("show");
+  dropdownMenu.setAttribute("aria-hidden", "true");
+  menuButton.setAttribute("aria-expanded", "false");
 }
 
-// Dark mode toggle (si existe)
+
+/* ----------------------------------------------------
+   TEMA OSCURO (DARK MODE)
+---------------------------------------------------- */
+
 (function initTheme() {
-  const currentTheme = localStorage.getItem('theme');
-  if (!darkModeToggle) return;
-  if (currentTheme) {
-    document.body.classList.add(currentTheme);
-    if (currentTheme === 'dark-mode') {
-      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
-    } else {
-      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Oscuro';
-    }
-  } else {
-    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Oscuro';
+  const theme = localStorage.getItem("theme");
+
+  if (theme === "dark-mode") {
+    document.body.classList.add("dark-mode");
+    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
   }
 
-  darkModeToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    let theme = 'light-mode';
-    if (document.body.classList.contains('dark-mode')) {
-      theme = 'dark-mode';
-      darkModeToggle.innerHTML = '<i class="fas fa-sun"></i> Modo Claro';
-    } else {
-      darkModeToggle.innerHTML = '<i class="fas fa-moon"></i> Modo Oscuro';
-    }
-    localStorage.setItem('theme', theme);
+  darkModeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark-mode");
+
+    const isDark = document.body.classList.contains("dark-mode");
+    localStorage.setItem("theme", isDark ? "dark-mode" : "light-mode");
+
+    darkModeToggle.innerHTML = isDark
+      ? '<i class="fas fa-sun"></i> Modo Claro'
+      : '<i class="fas fa-moon"></i> Modo Oscuro';
   });
 })();
 
-// Inicialización al cargar DOM
+
+/* ----------------------------------------------------
+   MODAL DE IMAGENES
+---------------------------------------------------- */
+
+function cerrarModal() {
+  imageModal.style.display = "none";
+
+  if (bgMusic.paused && localStorage.getItem("isMusicPlaying") === "playing") {
+    bgMusic.play().catch(() => {});
+    playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+  }
+}
+
+imageModal.addEventListener("click", e => {
+  if (e.target === imageModal) cerrarModal();
+});
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && imageModal.style.display === "flex") {
+    cerrarModal();
+  }
+});
+
+
+/* ----------------------------------------------------
+   MOSTRAR CONTENIDO DE UN CÓDIGO
+---------------------------------------------------- */
+
+function mostrarContenido(codigo) {
+  const data = mensajes[codigo];
+  if (!data) return;
+
+  contenidoDiv.innerHTML = "";
+  contenidoDiv.hidden = false;
+  contenidoDiv.classList.remove("fade-in");
+  void contenidoDiv.offsetWidth;
+  contenidoDiv.classList.add("fade-in");
+
+  let html = "";
+
+  /* VIDEO */
+  if (data.videoEmbed) {
+    html += `
+      <h2>Video Especial</h2>
+      <p>${data.texto || ""}</p>
+      <div class="video-wrapper">
+        <iframe src="${data.videoEmbed}" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+          allowfullscreen></iframe>
+      </div>
+      <button id="resumeMusicBtn" class="button small-button">
+        <i class="fas fa-music"></i> Reanudar Música
+      </button>
+    `;
+
+    bgMusic.pause();
+    playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`;
+
+    contenidoDiv.innerHTML = html;
+
+    document.getElementById("resumeMusicBtn").addEventListener("click", () => {
+      bgMusic.play();
+      playPauseBtn.innerHTML = `<i class="fas fa-pause"></i>`;
+      document.getElementById("resumeMusicBtn").remove();
+    });
+
+    return;
+  }
+
+  /* IMAGEN */
+  if (data.imagen) {
+    modalImg.src = data.imagen;
+    modalCaption.textContent = data.texto || "";
+    imageModal.style.display = "flex";
+    modalImg.classList.add("fade-in-modal");
+
+    bgMusic.pause();
+    playPauseBtn.innerHTML = `<i class="fas fa-play"></i>`;
+
+    return;
+  }
+
+  /* AUDIO ESPECIAL DEL CÓDIGO */
+  if (data.audio) {
+    codeAudio.src = data.audio;
+    fadeOutAudio(bgMusic, 0.05, 400);
+
+    html += `
+      <h2>Audio Secreto</h2>
+      <p>${data.texto || ""}</p>
+      <button id="playCodeAudioBtn" class="button">
+        <i class="fas fa-play"></i> Reproducir
+      </button>
+    `;
+
+    contenidoDiv.innerHTML = html;
+
+    document.getElementById("playCodeAudioBtn").addEventListener("click", () => {
+      codeAudio.play();
+      document.getElementById("playCodeAudioBtn").remove();
+    });
+
+    codeAudio.addEventListener("ended", () => fadeInAudio(bgMusic, 0.05, 500));
+
+    return;
+  }
+
+  /* ENLACE */
+  if (data.link) {
+    html += `
+      <h2>Enlace Especial</h2>
+      <p>${data.texto || ""}</p>
+      <a href="${data.link}" target="_blank" class="button">
+        Abrir Enlace <i class="fas fa-external-link-alt"></i>
+      </a>
+    `;
+    contenidoDiv.innerHTML = html;
+    return;
+  }
+
+  /* DESCARGA */
+  if (data.descarga) {
+    html += `
+      <h2>Descarga Especial</h2>
+      <p>${data.texto || ""}</p>
+      <a href="${data.descarga.url}" download="${data.descarga.nombre}" class="button">
+        Descargar ${data.descarga.nombre} <i class="fas fa-download"></i>
+      </a>
+    `;
+    contenidoDiv.innerHTML = html;
+    return;
+  }
+
+  /* TEXTO NORMAL */
+  if (data.texto) {
+    html += `
+      <h2>Mensaje Especial</h2>
+      <p>${data.texto}</p>
+    `;
+    contenidoDiv.innerHTML = html;
+    return;
+  }
+
+  /* DEFAULT */
+  contenidoDiv.innerHTML = `
+    <p>Este código existe pero no tiene contenido asociado.</p>
+  `;
+}
+
+
+/* ----------------------------------------------------
+   INICIALIZACIÓN FINAL AL CARGAR LA PÁGINA
+---------------------------------------------------- */
+
 document.addEventListener("DOMContentLoaded", () => {
+  audioVolume.value = savedVolume;
+
+  shuffleBtn.style.color = isShuffling ? "var(--highlight-pink)" : "";
+
+  const muted = localStorage.getItem("bgMusicMuted") === "true";
+  bgMusic.muted = muted;
+  muteBtn.innerHTML = muted
+    ? `<i class="fas fa-volume-mute"></i>`
+    : `<i class="fas fa-volume-up"></i>`;
+
+  bgMusic.src = playlist[currentTrack];
+  currentTrackName.textContent = friendlyTrackName(playlist[currentTrack]);
+
   actualizarProgreso();
   actualizarListaDesbloqueados();
 });
 
-// Exponer funciones al scope (opcional para debugging)
-window.mostrarContenido = mostrarContenido;
+
+/* ----------------------------------------------------
+   EXPONER FUNCIONES PARA DEPURACIÓN OPCIONAL
+---------------------------------------------------- */
 window.procesarCodigo = procesarCodigo;
+window.mostrarContenido = mostrarContenido;
 window.cerrarModal = cerrarModal;
+window.loadTrack = loadTrack;
+window.playPause = playPause;
