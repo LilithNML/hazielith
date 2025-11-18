@@ -545,7 +545,7 @@ h1 {
 
 /* Menú desplegable */
 .menu-container {
-  position: absolute;
+  position: fixed;
   top: 20px;
   left: 20px;
   z-index: 1001; /* Para que esté por encima de todo */
