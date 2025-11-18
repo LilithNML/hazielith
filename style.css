@@ -452,7 +452,7 @@ h1 {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: var(--button-bg-initial);
+  background: var(--highlight-pink);
   padding: 14px;
   border-radius: 50%;
   cursor: pointer;
