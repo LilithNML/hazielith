@@ -847,7 +847,7 @@ select:focus-visible {
   }
 }
 
-/* 🔎 Mejor estilo para inputs (con micro-interacciones y accesibilidad) */
+/*  Mejor estilo para inputs (con micro-interacciones y accesibilidad) */
 input[type="text"] {
     padding: 14px 18px;
     border-radius: 8px;
@@ -865,11 +865,22 @@ input[type="text"] {
         background 0.25s ease;
 }
 
-/* Enfoque moderno */
-input[type="text"]:focus {
-    box-shadow: 0 0 0 3px var(--highlight-pink-light);
-    transform: scale(1.015);
-    background: rgba(255,255,255,0.35);
+/* Iluminación difusa blanca para inputs */
+input[type="text"]:focus,
+#codeInput:focus {
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.20);
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.01);
+    transition: 
+        box-shadow 0.25s ease,
+        background-color 0.25s ease,
+        transform 0.2s ease;
+}
+
+body.dark-mode input[type="text"]:focus,
+body.dark-mode #codeInput:focus {
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.04);
 }
 
 .modal {
@@ -1061,4 +1072,16 @@ body .lista-codigos li .favorite-toggle-btn.active i.fas {
 
   fill: var(--favorite-icon-active) !important;
 
+}
+
+/* Eliminar el rectángulo azul en móviles y navegadores WebKit */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Eliminar el borde azul/rectángulo que agrega Android al hacer click */
+button, a, input, select, textarea {
+  outline: none !important;
+  -webkit-focus-ring-color: transparent !important;
+  caret-color: var(--text-light); /* mantiene el cursor visible */
 }
