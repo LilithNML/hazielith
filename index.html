@@ -4,49 +4,53 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Te amo</title>
+
+  <!-- Descripción -->
   <meta name="description" content="Descubre mensajes y regalos secretos con códigos especiales, una sorpresa romántica para ti."/>
-  
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" as="style" crossorigin>
+
+  <!-- Fuente -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" as="style">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courgette&display=swap">
 
+  <!-- CSS principal -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- ===================== -->
-  <!-- FAVICONS (100% Opera Android compatible) -->
-  <!-- ===================== -->
+  <!-- FAVICONS DEFINITIVOS (GitHub Pages compatible) -->
+  <link rel="shortcut icon" href="/hazielith/assets/images/favicon.png?v=5" type="image/png">
+  <link rel="icon" href="/hazielith/assets/images/favicon.png?v=5" type="image/png">
 
-  <!-- Opera Android SOLO respeta shortcut icon -->
-  <link rel="shortcut icon" href="assets/images/favicon.png?v=3" type="image/png">
+  <link rel="icon" sizes="192x192" href="/hazielith/assets/images/favicon-192.png">
+  <link rel="icon" sizes="512x512" href="/hazielith/assets/images/favicon-512.png">
 
-  <!-- Navegadores normales -->
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/favicon-192.png">
-  <link rel="icon" type="image/png" sizes="512x512" href="assets/images/favicon-512.png">
-  <link rel="apple-touch-icon" href="assets/images/favicon-180.png">
-  <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+  <link rel="apple-touch-icon" href="/hazielith/assets/images/favicon-180.png">
 
+  <meta name="theme-color" content="#000000" />
+  <meta name="msapplication-TileImage" content="/hazielith/assets/images/favicon-192.png">
+
+  <!-- PWA -->
+  <link rel="manifest" href="/hazielith/manifest.json">
+
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-  <!-- ===================== -->
-  <!-- OPEN GRAPH SHARE PREVIEW -->
-  <!-- ===================== -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Un Secreto Para Ti" />
   <meta property="og:description" content="Descubre mensajes y regalos secretos con códigos especiales, una sorpresa romántica para ti." />
+  
   <meta property="og:image" content="https://lilithnml.github.io/hazielith/assets/images/social-share-image.jpg" />
+  
   <meta property="og:url" content="https://lilithnml.github.io/hazielith/" />
   <meta property="og:type" content="website" />
 
-  <!-- Manifest (para PWA, no afecta Opera favicon) -->
-  <link rel="manifest" href="manifest.json">
-
-  <!-- Preloads -->
+  <!-- Preloads de imágenes y sonidos -->
   <link rel="preload" as="image" href="assets/images/fondo-romantico.jpg">
   <link rel="preload" as="image" href="assets/images/moon.png">
   <link rel="preload" as="audio" href="assets/audio/correct.mp3">
   <link rel="preload" as="audio" href="assets/audio/incorrect.mp3">
 
 </head>
-<body>
 
+<body>
   <div class="background-overlay" aria-hidden="true"></div>
   <div id="achievement-toast-container" aria-live="polite" aria-atomic="true"></div>
 
@@ -57,29 +61,33 @@
       </button>
 
       <nav id="dropdownMenu" class="dropdown-menu" aria-hidden="true">
-        <a href="#home" onclick="cerrarMenu()">
-          <i class="fas fa-home"></i> Inicio
-        </a>
+        <a href="#home" onclick="cerrarMenu()"><i class="fas fa-home"></i> Inicio</a>
         <a href="#unlocked-section" onclick="toggleUnlockedCodes()" aria-label="Ver códigos desbloqueados">
           <i class="fas fa-lock-open"></i> Desbloqueados
         </a>
-        <button id="showFavoritesBtn" class="dropdown-item" aria-label="Mostrar códigos favoritos">
+
+        <button id="showFavoritesBtn" class="dropdown-item">
           <i class="fas fa-heart"></i> Favoritos
         </button>
-        <button id="darkModeToggle" class="dropdown-item" aria-label="Alternar modo oscuro/claro">
+
+        <button id="darkModeToggle" class="dropdown-item">
           <i class="fas fa-moon"></i> Modo oscuro
         </button>
-        <button id="audioSettingsBtn" class="dropdown-item" aria-label="Controlar música">
+
+        <button id="audioSettingsBtn" class="dropdown-item">
           <i class="fas fa-music"></i> Audio
         </button>
-        <button id="exportProgressBtn" class="dropdown-item" aria-label="Exportar progreso">
+
+        <button id="exportProgressBtn" class="dropdown-item">
           <i class="fas fa-upload"></i> Exportar
         </button>
-        <button id="importProgressBtn" class="dropdown-item" aria-label="Importar progreso">
+
+        <button id="importProgressBtn" class="dropdown-item">
           <i class="fas fa-download"></i> Importar
         </button>
         <input type="file" id="importProgressInput" accept=".json" style="display:none">
-        <button id="resetProgressBtn" class="dropdown-item" aria-label="Restablecer todo el progreso">
+
+        <button id="resetProgressBtn" class="dropdown-item">
           <i class="fas fa-trash-alt"></i> Restablecer
         </button>
       </nav>
@@ -89,14 +97,13 @@
   <main class="container">
     <img src="assets/images/moon.png" alt="Luna" class="header-img" />
     <h1>Un Secreto Para Ti</h1>
-
     <p class="intro-text">
       ¡Bienvenido, mi amor! Aquí te esperan sorpresas y mensajes especiales.
       <br>Introduce un código secreto para descubrirlos.
     </p>
 
     <div class="input-container">
-      <input type="text" id="codeInput" placeholder="Introduce tu código aquí..." aria-label="Campo para introducir el código secreto" autofocus />
+      <input type="text" id="codeInput" placeholder="Introduce tu código aquí..." aria-label="Campo para código" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       <button id="submitCodeBtn" class="button" aria-label="Enviar código">
         <i class="fas fa-paper-plane"></i>
       </button>
@@ -107,31 +114,29 @@
     <div class="achievements-section">
       <h2 class="section-title">Tu Progreso</h2>
       <p id="progreso" class="progreso-text">Desbloquea códigos para avanzar...</p>
-
-      <div class="progress-bar-container" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Progreso de códigos desbloqueados">
+      <div class="progress-bar-container">
         <div class="progress-bar-fill" style="width: 0%;"></div>
       </div>
     </div>
 
     <div class="unlocked-codes-section" id="unlocked-section">
       <h2 class="section-title">Códigos Desbloqueados</h2>
+
       <button id="toggleUnlockedCodes" class="button" aria-expanded="false" aria-controls="unlockedCodesPanel">
         Mostrar Códigos Desbloqueados
       </button>
 
       <div id="unlockedCodesPanel" class="unlocked-codes-panel" hidden>
         <div class="filter-controls">
-          <input type="text" id="searchUnlockedCodes" placeholder="Buscar código..." aria-label="Buscar códigos desbloqueados">
-          
-          <select id="categoryFilter" aria-label="Filtrar por categoría">
+          <input type="text" id="searchUnlockedCodes" placeholder="Buscar código...">
+          <select id="categoryFilter">
             <option value="">Todas las categorías</option>
           </select>
 
-          <button id="filterFavoritesBtn" class="button small-button" aria-pressed="false" aria-label="Filtrar por favoritos">
+          <button id="filterFavoritesBtn" class="button small-button" aria-pressed="false">
             <i class="far fa-heart"></i> Solo Favoritos
           </button>
         </div>
-
         <ul id="unlockedCodesList" class="lista-codigos"></ul>
       </div>
     </div>
@@ -142,29 +147,23 @@
   <audio id="bgMusic" preload="auto"></audio>
   <audio id="codeAudio" preload="auto"></audio>
 
-  <div id="imageModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
-    <h2 id="modalTitle" class="sr-only">Imagen Desbloqueada</h2>
-    <span class="close" onclick="cerrarModal()" aria-label="Cerrar modal de imagen">×</span>
-    <img id="modalImg" src="" alt="Imagen desbloqueada" class="modal-content">
+  <div id="imageModal" class="modal">
+    <span class="close" onclick="cerrarModal()">×</span>
+    <img id="modalImg" class="modal-content">
     <p id="modalCaption" class="modal-caption"></p>
   </div>
 
-  <div id="audioPanel" class="audio-panel" aria-hidden="true">
+  <div id="audioPanel" class="audio-panel">
     <div class="audio-header">
       <h3>Reproductor</h3>
-      <button id="closeAudioPanel" class="close-audio-btn" aria-label="Cerrar panel">
-        <i class="fas fa-times"></i>
-      </button>
+      <button id="closeAudioPanel" class="close-audio-btn"><i class="fas fa-times"></i></button>
     </div>
-
-    <div class="audio-info">
-      <p id="currentTrackName">music1</p>
-    </div>
+    <div class="audio-info"><p id="currentTrackName">music1</p></div>
 
     <div class="audio-controls">
-      <button id="prevTrackBtn" class="audio-btn"><i class="fas fa-backward"></i></button>
-      <button id="playPauseBtn" class="audio-btn"><i class="fas fa-play"></i></button>
-      <button id="nextTrackBtn" class="audio-btn"><i class="fas fa-forward"></i></button>
+      <button id="prevTrackBtn"><i class="fas fa-backward"></i></button>
+      <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+      <button id="nextTrackBtn"><i class="fas fa-forward"></i></button>
     </div>
 
     <div class="volume-section">
@@ -173,11 +172,12 @@
     </div>
 
     <div class="audio-options">
-      <button id="muteBtn" class="audio-btn small"><i class="fas fa-volume-mute"></i></button>
-      <button id="shuffleBtn" class="audio-btn small"><i class="fas fa-random"></i></button>
+      <button id="muteBtn" class="small"><i class="fas fa-volume-mute"></i></button>
+      <button id="shuffleBtn" class="small"><i class="fas fa-random"></i></button>
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="data.js"></script>
   <script src="script.js"></script>
 
