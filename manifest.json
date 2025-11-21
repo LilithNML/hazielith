@@ -10,8 +10,7 @@
     {
       "src": "/hazielith/favicon-180.png",
       "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
+      "type": "image/png"
     },
     {
       "src": "/hazielith/favicon-512.png",
