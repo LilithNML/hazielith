@@ -1,16 +1,5 @@
 /***************************************************************
- * script.js
- * Versión final unificada — compatibilidad con data.js en raíz
- * - Normalización robusta de entrada
- * - Limpieza de caracteres invisibles
- * - Detección de "cercanía" a códigos
- * - Reproductor lateral con playlist
- * - Export / Import / Reset
- * - Comentarios y buenas prácticas
- *
- * Supone:
- * - Existe un objeto global `mensajes` definido en data.js
- * - (Opcional) Existe un arreglo `logros` en data.js si manejas logros
+ script.js
  ***************************************************************/
 
 /* ===========================
