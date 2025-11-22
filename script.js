@@ -647,15 +647,16 @@ importInput.addEventListener("change", e => {
 ---------------------------------------------------- */
 function resetearProgreso() {
   const confirmar = confirm(
-    "¿Seguro que quieres borrar TODO tu progreso?\n\n" +
-    "Se eliminarán:\n" +
-    "✓ Códigos desbloqueados\n" +
-    "✓ Favoritos\n" +
-    "✓ Logros\n" +
-    "✓ Tema oscuro\n" +
-    "✓ Música (volumen, pista, mute, shuffle)\n" +
-    "✓ Intentos fallidos\n\n" +
-    "Esta acción NO se puede deshacer."
+    "¿Quieres restablecer tu progreso?\n\n" +
+  "Antes de hacerlo, sería buena idea guardar una copia de seguridad por si más adelante deseas recuperar tus avances.\n\n" +
+  "Al restablecer, se limpiarán:\n" +
+  "- Los códigos que has descubierto\n" +
+  "- Tus favoritos\n" +
+  "- Tus logros\n" +
+  "- Tu configuración de tema\n" +
+  "- Tu música y preferencias de audio\n" +
+  "- El registro de intentos\n\n" +
+  "No pasa nada si decides continuar; solo recuerda que esta acción no se puede deshacer.";
   );
 
   if (!confirmar) return;
