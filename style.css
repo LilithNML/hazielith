@@ -332,3 +332,39 @@ h1{font-size:2em}
   button,a,input,select,textarea{caret-color:var(--text-light);-webkit-appearance:none}
 
 /* Fin del archivo optimized */
+
+/* ========== FIX 1: evitar desbordes en tarjetas de códigos ========== */
+
+.lista-codigos li {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.lista-codigos li .code-name,
+.lista-codigos li span:not(.category):not(.favorite-toggle-btn) {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.lista-codigos li .favorite-toggle-btn,
+.lista-codigos li .category {
+  flex-shrink: 0;
+}
+
+/* ========== FIX 2: el modal ya NO aparece automáticamente al entrar ========== */
+
+.modal {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.modal.show,
+.modal.active {
+  display: flex !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
