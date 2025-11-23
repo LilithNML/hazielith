@@ -1085,3 +1085,25 @@ button, a, input, select, textarea {
   -webkit-focus-ring-color: transparent !important;
   caret-color: var(--text-light); /* mantiene el cursor visible */
 }
+
+
+/* ========== FIX 1: evitar desbordes en tarjetas de códigos ========== */
+
+.lista-codigos li {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.lista-codigos li .code-name,
+.lista-codigos li span:not(.category):not(.favorite-toggle-btn) {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.lista-codigos li .favorite-toggle-btn,
+.lista-codigos li .category {
+  flex-shrink: 0;
+}
