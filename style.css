@@ -1,0 +1,1087 @@
+/* styles.css */
+/* Fuente romántica: 'Courgette' para un toque delicado */
+/* @import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap'); */ /* Eliminado, se carga en HTML */
+
+/* Variables CSS para una gestión de colores más sencilla y coherente */
+:root {
+  --primary-font: 'Courgette', cursive;
+
+  /* Colores del tema claro (por defecto) */
+  --text-light: #CDD8D5; /* Color de texto general */
+  --text-medium: #AEA5A5; /* Color de texto para contenido secundario */
+  --text-dark: #E0CFC1; /* Color de texto para elementos de lista */
+  --header-color: #BCBDB9; /* Color para títulos */
+  --background-overlay: rgba(32, 30, 43, 0.7); /* Oscuro con transparencia para superposición */
+  --container-bg: rgba(32, 30, 43, 0.40); /* Oscuro con más opacidad para el contenedor */
+  --content-bg: #1E2021; /* Fondo del área de contenido */
+  --border-color-input: #8E7383; /* Borde de los campos de entrada */
+  --input-bg: #6B5D74; /* Fondo de los campos de entrada */
+  --button-bg-initial: #9A8C8B; /* Fondo inicial del botón */
+  --button-bg-hover: #3F3938; /* Fondo del botón al pasar el mouse */
+  --progress-color: #A3C3BD; /* Color de la barra de progreso */
+  --highlight-pink: #ff7aa8; /* Rosa para elementos destacados */
+  --highlight-pink-light: #ffaed0;
+  --highlight-green: #A3C3BD; /* Verde para éxito */
+  --highlight-red: #E74C3C; /* Rojo para error */
+  --link-color: #FFC0CB; /* Color de enlaces */
+  --link-hover: #FFDDEE; /* Color de enlaces al pasar el mouse */
+  --achievement-bg: #4A4A6A; /* Fondo del toast de logro */
+  --achievement-text: #E0CFC1; /* Texto del toast de logro */
+  --modal-bg: rgba(0, 0, 0, 0.8); /* Fondo del modal */
+  --favorite-icon-default: #ccc; /* Icono de favorito inactivo */
+  --favorite-icon-active: #FFD700; /* Icono de favorito activo (oro) */
+}
+
+/* Variables para el Modo Oscuro */
+body.dark-mode {
+  --text-light: #f2e6df;
+  --text-medium: #d8ccc3;
+  --text-dark: #fff4ec;
+  --header-color: #E0CFC1;
+  --background-overlay: rgba(0, 0, 0, 0.8);
+  --container-bg: rgba(10, 10, 10, 0.5);
+  --content-bg: #111111;
+  --border-color-input: #5A5A5A;
+  --input-bg: #2C2C2C;
+  --button-bg-initial: #4A4A4A;
+  --button-bg-hover: #606060;
+  --progress-color: #7B9D8F;
+  --highlight-pink: #A860A8;
+  --highlight-green: #7B9D8F;
+  --highlight-red: #D32F2F;
+  --link-color: #A0D2EB;
+  --link-hover: #C0E8FF;
+  --achievement-bg: #2C2C2C;
+  --achievement-text: #E0CFC1;
+  --modal-bg: rgba(0, 0, 0, 0.9);
+  --favorite-icon-default: #888;
+  --favorite-icon-active: #FFC107;
+}
+
+/* Estilos globales y reseteos */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth; /* Desplazamiento suave para anclas */
+}
+
+body {
+  font-family: var(--primary-font);
+  background: url('assets/images/fondo-romantico.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text-light);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Asegura que el body ocupe al menos la altura de la ventana */
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow-x: hidden; /* Evita desbordamientos horizontales */
+}
+
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--background-overlay);
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
+/* Contenedor principal del contenido */
+.container {
+  background-color: var(--container-bg);
+  padding: 2.5rem;
+  border-radius: 15px;
+  text-align: center;
+  max-width: 900px;
+  width: 90%;
+  margin: 4rem auto 2rem auto;
+  position: relative;
+  overflow: hidden;
+
+  /* Glass elegante */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+
+  /* Micro-animación */
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 40px rgba(255, 120, 160, 0.18);
+}
+
+/* Encabezado */
+h1 {
+  color: var(--header-color);
+  margin-bottom: 1.5rem;
+  font-size: 3em;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Texto introductorio */
+.intro-text {
+  font-size: 1.2em;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  color: var(--text-medium);
+}
+
+/* Imagen del encabezado (luna) */
+.header-img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 1.5rem;
+  animation: float 6s ease-in-out infinite; /* Animación de flotar */
+}
+
+/* Input y botón */
+.input-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+#codeInput {
+  flex-grow: 1; /* Permite que el input crezca */
+  max-width: 350px; /* Ancho máximo para el input */
+  padding: 15px 20px;
+  border: 2px solid var(--border-color-input);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-light);
+  font-size: 1.1em;
+  text-align: center;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+#codeInput::placeholder {
+  color: var(--text-medium);
+  opacity: 0.8;
+}
+
+#codeInput:focus {
+  border-color: var(--highlight-pink);
+  background-color: var(--content-bg);
+  outline: none; /* Se maneja con :focus-visible */
+}
+
+/* Botones genéricos */
+.button {
+  background-color: var(--button-bg-initial);
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  padding: 15px 25px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease,
+            transform 0.18s cubic-bezier(0.22, 1, 0.36, 1),
+            box-shadow 0.25s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none; /* Para usarlo en enlaces también */
+}
+
+/* Micro-interacciones suaves y orgánicas */
+.button:hover {
+    background-color: var(--button-bg-hover);
+    transform: translateY(-3px) scale(1.02); /* sube y crece un poquito */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.button:active {
+    transform: scale(0.97); /* hundimiento natural */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
+.button.small-button { /* Para botones más pequeños como "Solo Favoritos" */
+  padding: 10px 15px;
+  font-size: 0.95em;
+}
+
+/* Estados de validación del input */
+#codeInput.success {
+  border-color: var(--highlight-green);
+}
+
+#codeInput.error {
+  border-color: var(--highlight-red);
+}
+
+/* Contenido desbloqueado */
+.contenido-container {
+  background-color: var(--content-bg);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  margin-top: 2rem;
+  min-height: 100px;
+  text-align: left;
+  line-height: 1.7;
+  color: var(--text-medium);
+  animation: fadeIn 1s ease-out forwards; /* Animación de aparición */
+  word-wrap: break-word; /* Para que el texto largo se ajuste */
+  max-width: 100%; /* Asegura que no desborde */
+}
+
+.contenido-container h2 {
+  color: var(--header-color);
+  margin-bottom: 1rem;
+  font-size: 1.8em;
+}
+
+.contenido-container p {
+  margin-bottom: 1em;
+  white-space: pre-wrap; /* Para preservar saltos de línea en el texto */
+}
+
+.contenido-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1em 0;
+  display: block; /* Para centrar si es necesario */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenido-container iframe {
+  width: 100%;
+  max-width: 600px; /* Ancho máximo para videos */
+  aspect-ratio: 16 / 9; /* Mantiene la proporción de aspecto */
+  border-radius: 8px;
+  margin: 1em auto;
+  display: block;
+}
+
+.contenido-container a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.contenido-container a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+/* Secciones generales */
+.section-title {
+  color: var(--header-color);
+  margin-top: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 2.2em;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Sección de progreso */
+.achievements-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px dashed var(--border-color-input);
+}
+
+.progreso-text {
+  font-size: 1.15em;
+  margin-bottom: 1.5rem;
+  color: var(--text-medium);
+}
+
+/* Barra de progreso visual */
+.progress-bar-container {
+  width: 80%;
+  max-width: 400px;
+  background-color: var(--input-bg);
+  border-radius: 10px;
+  height: 20px;
+  overflow: hidden;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--progress-color);
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 5px; /* Pequeño padding para el texto si se añade */
+  font-size: 0.9em;
+  color: var(--text-light);
+  font-weight: bold;
+}
+
+/* Sección de códigos desbloqueados */
+.unlocked-codes-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px dashed var(--border-color-input);
+}
+
+.unlocked-codes-panel {
+  background-color: var(--content-bg);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin-top: 1.5rem;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  gap: 15px;
+  margin-bottom: 1.5rem;
+  justify-content: center;
+}
+
+.filter-controls input[type="text"],
+.filter-controls select,
+.filter-controls .button.small-button { /* Añadido el botón small-button */
+  padding: 10px 15px;
+  border: 1px solid var(--border-color-input);
+  border-radius: 8px;
+  background-color: var(--input-bg);
+  color: var(--text-light);
+  font-size: 1em;
+  width: calc(50% - 10px); /* Dos columnas en escritorio */
+  max-width: 250px;
+  transition: border-color 0.3s ease;
+}
+
+.filter-controls input[type="text"]:focus,
+.filter-controls select:focus,
+.filter-controls .button.small-button:focus {
+  border-color: var(--highlight-pink);
+  outline: none; /* Se maneja con :focus-visible */
+}
+
+/* Estilo para el botón de favoritos cuando está activado */
+#filterFavoritesBtn[aria-pressed="true"] {
+  background-color: var(--highlight-pink);
+  color: white;
+}
+
+#filterFavoritesBtn[aria-pressed="true"] .fa-heart {
+  color: var(--favorite-icon-active); /* Para el corazón en sí */
+}
+
+
+.lista-codigos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid; /* Usa CSS Grid para la lista */
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Columnas responsivas */
+  gap: 15px;
+}
+
+.lista-codigos li {
+  background-color: var(--input-bg);
+  color: var(--text-dark);
+  padding: 10px 15px;
+  border-radius: 8px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95em;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative; /* Para posicionar el icono de favorito */
+}
+
+.lista-codigos li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.lista-codigos li span.category {
+  font-size: 0.8em;
+  color: var(--text-medium);
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+/* Icono de favorito dentro de la lista de códigos */
+.favorite-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--favorite-icon-default);
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 5px; /* Área de clic más grande */
+}
+
+.favorite-toggle-btn:hover {
+  transform: scale(1.2);
+}
+
+/* Estilo para icono de favorito activado */
+.favorite-toggle-btn.active .fas { /* Usamos fas para el corazón relleno */
+  color: var(--favorite-icon-active);
+}
+.favorite-toggle-btn .far { /* Usamos far para el corazón vacío */
+  color: var(--favorite-icon-default);
+}
+
+
+/* Botón de música */
+
+.music-toggle {
+  /* Posición fija en la esquina inferior derecha */
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+
+  /* Dimensiones y estilos base */
+  width: 50px;
+  height: 50px;
+  font-size: 1.3em;
+  background: var(--highlight-pink);
+  padding: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  
+  /* Transiciones para efectos suaves */
+  transition: transform 0.2s ease, box-shadow 0.25s ease;
+}
+
+.music-toggle:hover {
+   /* Efecto al pasar el ratón */
+   transform: scale(1.12) translateY(-3px);
+   box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.music-toggle i {
+  /* Transición del icono */
+  transition: transform 0.3s ease;
+}
+
+.music-toggle.playing i {
+  /* Animación de pulso cuando la música está sonando */
+  animation: pulse 0.7s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes pulse {
+  /* Define el efecto de pulsación sutil */
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+
+/* Modal de imagen */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--modal-bg);
+  backdrop-filter: blur(5px);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 80%;
+  max-height: 80vh;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease-out;
+}
+
+.modal-content.fade-in-modal {
+  animation: fadeInFromScale 0.5s ease-out forwards;
+}
+
+.modal-caption {
+  margin-top: 15px;
+  color: var(--text-light);
+  font-size: 1.2em;
+  text-align: center;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: var(--text-light);
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 1001; /* Asegura que esté por encima del contenido del modal */
+}
+
+.close:hover,
+.close:focus {
+  color: var(--highlight-red);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilos de accesibilidad para Screen Readers Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* Menú desplegable */
+.menu-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001; /* Para que esté por encima de todo */
+}
+
+.menu-button {
+  background-color: var(--highlight-pink);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5em;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.menu-button:hover {
+  background-color: var(--button-bg-hover);
+  transform: rotate(5deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  background-color: var(--container-bg);
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  min-width: 200px;
+  padding: 10px 0;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Micro-interacciones modernas del menú */
+.dropdown-menu a,
+.dropdown-menu button {
+  color: var(--text-light);
+  padding: 12px 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  background: none;
+  border: none;
+  width: 100%;
+  font-family: var(--primary-font);
+  font-size: 1.1em;
+  cursor: pointer;
+
+  transition:
+    background 0.28s ease,
+    color 0.25s ease,
+    transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hover con efecto de desplazamiento suave */
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(6px);
+  color: var(--highlight-pink);
+}
+
+/* Accesibilidad con teclado */
+.dropdown-menu a:focus-visible,
+.dropdown-menu button:focus-visible {
+  outline: 2px solid var(--highlight-pink);
+  outline-offset: 4px;
+}
+
+/* Modo oscuro — hover adaptado */
+body.dark-mode .dropdown-menu a:hover,
+body.dark-mode .dropdown-menu button:hover {
+  background: rgba(255, 255, 255, 0.10);
+}
+
+.dropdown-menu button i {
+  margin-right: 10px;
+}
+
+/* Elimina outline y box-shadow por defecto en elementos interactivos, pero añade uno accesible */
+/* Para una mejor accesibilidad, no removemos `outline` por defecto sino que lo personalizamos
+   o lo reseteamos solo cuando `focus-visible` no es aplicable y lo necesitamos. */
+button:not(.music-toggle):not(.menu-button),
+a:not(.dropdown-menu a), /* Excluye los del dropdown para evitar conflicto */
+input,
+select {
+  /* box-shadow: none; */ /* Puedes mantenerlo si quieres, o personalizar */
+  -webkit-appearance: none; /* En algunos casos ayuda en Android */
+}
+
+/* Estilo de foco personalizado (solo cuando se navega con teclado) */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--highlight-pink); /* Usar una variable para consistencia */
+  outline-offset: 3px; /* Aumentar ligeramente el offset para mayor visibilidad */
+  border-radius: 8px; /* Coherente con otros border-radius */
+}
+
+/* Estilos para el toast de logros */
+#achievement-toast-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none; /* Permite clics a través del contenedor */
+}
+
+.achievement-toast {
+  background-color: var(--achievement-bg);
+  color: var(--achievement-text);
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideInFadeOut 4s forwards;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  min-width: 250px;
+  max-width: 80%;
+}
+
+/* Animaciones */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFadeOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInFromScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Media Queries para Responsividad */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5em;
+  }
+
+  .intro-text {
+    font-size: 1.1em;
+  }
+
+  .container {
+    padding: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .filter-controls {
+    flex-direction: column; /* Apila los filtros en pantallas pequeñas */
+  }
+
+  .filter-controls input[type="text"],
+  .filter-controls select,
+  .filter-controls .button.small-button { /* También el botón de favoritos */
+    width: 100%; /* Ocupan todo el ancho */
+    max-width: none;
+  }
+
+  .lista-codigos {
+    grid-template-columns: 1fr; /* Una columna en pantallas muy pequeñas */
+  }
+
+
+  .menu-button {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3em;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  .intro-text {
+    font-size: 1em;
+  }
+
+  .input-container {
+    flex-direction: column;
+  }
+
+  #codeInput {
+    max-width: 100%;
+    width: 100%; /* Asegura que el input ocupe el 100% */
+  }
+
+  .button {
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  .section-title {
+    font-size: 1.8em;
+  }
+
+  .progreso-text {
+    font-size: 1em;
+  }
+
+  .modal-content {
+    max-width: 95%;
+  }
+
+  .close {
+    font-size: 30px;
+    top: 10px;
+    right: 20px;
+  }
+}
+
+/*  Mejor estilo para inputs (con micro-interacciones y accesibilidad) */
+input[type="text"] {
+    padding: 14px 18px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    background: var(--input-bg, rgba(255,255,255,0.25));
+    color: var(--text-light);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    transition:
+        box-shadow 0.3s ease,
+        transform 0.2s ease,
+        background 0.25s ease;
+}
+
+/* Iluminación difusa blanca para inputs */
+input[type="text"]:focus,
+#codeInput:focus {
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.20);
+    background-color: rgba(255, 255, 255, 0.06);
+    transform: scale(1.01);
+    transition: 
+        box-shadow 0.25s ease,
+        background-color 0.25s ease,
+        transform 0.2s ease;
+}
+
+body.dark-mode input[type="text"]:focus,
+body.dark-mode #codeInput:focus {
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.modal {
+  backdrop-filter: blur(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.modal-content {
+  border-radius: 15px;
+  animation: popIn 0.35s ease forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+h1:hover, h2:hover {
+   transform: scale(1.01);
+   transition: transform 0.25s ease;
+}
+
+/* Panel de audio lateral */
+.audio-panel {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 300px;
+  height: 100%;
+  background: var(--container-bg);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  box-shadow: -4px 0 18px rgba(0,0,0,0.5);
+  padding: 20px;
+  z-index: 2000;
+  transition: right 0.4s cubic-bezier(.25,.8,.25,1), opacity 0.3s ease;
+  opacity: 0;
+}
+
+.audio-panel.show {
+  right: 0;
+  opacity: 1;
+}
+
+/* Encabezado */
+.audio-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.audio-header h3 {
+  color: var(--header-color);
+  font-size: 1.5em;
+}
+
+.close-audio-btn {
+  background: none;
+  border: none;
+  font-size: 1.3em;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.close-audio-btn:hover {
+  transform: rotate(90deg) scale(1.1);
+}
+
+/* Info pista */
+.audio-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#currentTrackName {
+  font-size: 1.2em;
+  color: var(--text-medium);
+}
+
+/* Controles */
+.audio-controls {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+
+.audio-btn {
+  background: var(--button-bg-initial);
+  border: none;
+  color: var(--text-light);
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.audio-btn:hover {
+  background: var(--highlight-pink);
+  transform: scale(1.1);
+}
+
+.audio-btn.small {
+  padding: 10px;
+  font-size: 0.9em;
+}
+
+/* Volumen */
+.volume-section {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--text-medium);
+}
+
+#audioVolume {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Opciones */
+.audio-options {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+/* ----- Forzar color dorado en favoritos (alta especificidad y compatibilidad) ----- */
+
+/* Aplica a <i class="fas ...">, <svg> (fa SVG), y texto rellenable */
+
+.favorite-toggle-btn i.fas,
+
+.favorite-toggle-btn.active i.fas,
+
+.favorite-toggle-btn.favorited i.fas,
+
+.favorite-toggle-btn[aria-pressed="true"] i.fas,
+
+.favorite-toggle-btn.active svg,
+
+.favorite-toggle-btn.favorited svg,
+
+.favorite-toggle-btn[aria-pressed="true"] svg {
+
+  color: var(--favorite-icon-active) !important;
+
+  -webkit-text-fill-color: var(--favorite-icon-active) !important; /* Safari */
+
+  fill: var(--favorite-icon-active) !important; /* para SVGs que usan fill */
+
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.25)) !important;
+
+  transform: scale(1.15);
+
+}
+
+/* Asegurar que el icono vacío se vea neutral */
+
+.favorite-toggle-btn i.far,
+
+.favorite-toggle-btn .far {
+
+  color: var(--favorite-icon-default) !important;
+
+  fill: none !important;
+
+}
+
+/* Transiciones suaves */
+
+.favorite-toggle-btn i,
+
+.favorite-toggle-btn svg {
+
+  transition: color 180ms ease, transform 180ms ease, filter 220ms ease;
+
+}
+
+/* Si alguna regla inline o de FontAwesome bloquea, forzamos la prioridad con un selector aún más específico */
+
+body .lista-codigos li .favorite-toggle-btn.active i.fas {
+
+  color: var(--favorite-icon-active) !important;
+
+  -webkit-text-fill-color: var(--favorite-icon-active) !important;
+
+  fill: var(--favorite-icon-active) !important;
+
+}
+
+/* Eliminar el rectángulo azul en móviles y navegadores WebKit */
+* {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Eliminar el borde azul/rectángulo que agrega Android al hacer click */
+button, a, input, select, textarea {
+  outline: none !important;
+  -webkit-focus-ring-color: transparent !important;
+  caret-color: var(--text-light); /* mantiene el cursor visible */
+}
