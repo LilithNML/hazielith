@@ -90,7 +90,7 @@ const mensajes = {
     categoria: "Canción",
     pista: "Dos pequeños reflejos de nosotros que aún duermen en la espera del tiempo perfecto."
   },
-  "eneroe": {
+  "enero3": {
     texto: "<p>Aún me siento como si fuera ayer, el día en que celebré mi primer cumpleaños contigo, ya como mi esposo. Nunca imaginé que ese día sería tan especial, tan lleno de amor y de momentos que atesoro más que cualquier regalo. Era mi cumpleaños, sí, pero la verdadera celebración fue tenerte a ti a mi lado, compartiendo risas, caricias y silencios que decían más que mil palabras. Recuerdo cómo me hablabas, como si quisieras que ese día fuera perfecto, y lo fue, mucho más de lo que pude haber esperado. Tus detalles, tu presencia, tu amor, todo lo hizo tan único. Cada segundo a tu lado fue un regalo que nunca dejaré de agradecer. Gracias por hacer que mi primer cumpleaños contigo fuera una experiencia inolvidable. Ahora, más que nunca, entiendo que no son los años los que cuentan, sino los momentos compartidos, los gestos de amor que llenan el alma. Y contigo, cada día, cada cumpleaños, será siempre el más especial. Te amo, mi amor. Gracias por ser tú, por ser mi compañero, mi amor, mi todo.</p>",
     categoria: "Carta",
     pista: "El día que marcó mi existencia y abrió la puerta a todos nuestros recuerdos."
