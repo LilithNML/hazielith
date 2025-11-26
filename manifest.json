@@ -1,7 +1,9 @@
 {
+  "id": "/hazielith/",
   "name": "Un Secreto Para Ti",
   "short_name": "Secreto",
-  "start_url": "/",
+  "start_url": "/hazielith/",
+  "scope": "/hazielith/",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#000000",
